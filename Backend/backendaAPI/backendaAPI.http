@@ -1,0 +1,6 @@
+@backendaAPI_HostAddress = http://localhost:5087
+
+GET {{backendaAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
