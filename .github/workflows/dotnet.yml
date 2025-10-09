@@ -11,19 +11,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout (use PR/source branch)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref || github.ref_name }}
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '9.0.x'
 
-      # Restore dependencies
+      - name: Show projects in solution
+        run: dotnet sln Jem_ID.sln list
+
       - name: Restore
         run: dotnet restore Jem_ID.sln
         working-directory: .
 
-      # Build project
       - name: Build
         run: dotnet build Jem_ID.sln --no-restore -c Release
         working-directory: .
