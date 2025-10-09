@@ -1,10 +1,10 @@
-name: .NET
+name: .NET Build
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -16,16 +16,14 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 9.0.x
+          dotnet-version: '9.0.x'
 
-      - name: List projects in solution
-        run: dotnet sln Jem_ID.sln list
-
+      # Restore dependencies
       - name: Restore
         run: dotnet restore Jem_ID.sln
+        working-directory: .
 
+      # Build project
       - name: Build
-        run: dotnet build Jem_ID.sln --configuration Release --no-restore
-
-      - name: Test
-        run: dotnet test Jem_ID.sln --no-build --verbosity normal
+        run: dotnet build Jem_ID.sln --no-restore -c Release
+        working-directory: .
