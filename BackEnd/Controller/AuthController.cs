@@ -72,7 +72,7 @@ public class AuthController : ControllerBase
     [HttpGet("profile")]
     public async Task<IActionResult> GetProfile()
     {
-        // Email claim uit token (probeer beide varianten)
+        // Email claim uit token
         var email =
             User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Email)?.Value
             ?? User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
@@ -98,5 +98,27 @@ public class AuthController : ControllerBase
             return NotFound(new { message = "Gebruiker niet gevonden" });
 
         return Ok(user);
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpPut("promote-admin")]
+    public async Task<IActionResult> PromoteAdmin([FromBody] UpdateProfileDTO dto)
+    {
+        if (dto is null || string.IsNullOrWhiteSpace(dto.Email))
+            return BadRequest(new { message = "Email is verplicht." });
+
+        var email = dto.Email.Trim().ToLowerInvariant();
+
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        if (user is null)
+            return NotFound(new { message = "Gebruiker niet gevonden." });
+
+        if (user.Role == Role.Admin)
+            return Conflict(new { message = "Gebruiker is al Admin." });
+
+        user.Role = Role.Admin;
+        await _context.SaveChangesAsync();
+
+        return Ok(new { message = "Gebruiker gepromoveerd tot Admin.", userId = user.Id, user.Email });
     }
 }
