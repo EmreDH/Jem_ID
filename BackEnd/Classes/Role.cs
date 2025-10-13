@@ -2,6 +2,9 @@ namespace BackEnd.Classes;
 
 public enum Role
 {
-    User,
-    Admin
+    Klant,           
+    Admin,
+    Aanvoerder,
+    Veilingmeester,
+    User
 }

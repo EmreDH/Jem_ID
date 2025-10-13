@@ -1,16 +1,16 @@
 using BackEnd.Classes;
-using BackEnd.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using BackEnd.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-// JWT AUTH (validatie)
+// JWT AUTH 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(opt =>
     {
@@ -45,7 +45,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 // DI-registraties
-builder.Services.AddSingleton<JwtService>();                    // <-- BELANGRIJK
+builder.Services.AddSingleton<JwtService>();                   
 builder.Services.AddDbContext<ApplicationDbContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -58,7 +58,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseAuthentication();   // <-- eerst
+app.UseAuthentication();   
 app.UseAuthorization();
 
 app.MapControllers();
