@@ -12,12 +12,12 @@ namespace BackEnd.Data
 
         protected override void OnModelCreating(ModelBuilder b)
         {
-            // Converter enum <-> string
+            
             var roleConverter = new EnumToStringConverter<Role>();
 
             b.Entity<User>(e =>
             {
-                e.ToTable("Users");                 // map naar bestaande tabel
+                e.ToTable("Users");                 
                 e.HasKey(x => x.Id);
                 e.Property(x => x.Name).HasMaxLength(100).IsRequired();
                 e.Property(x => x.Email).HasMaxLength(255).IsRequired();
