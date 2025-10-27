@@ -68,7 +68,7 @@ public class AanvoerderController : ControllerBase
             .FirstOrDefaultAsync();
 
         if (aanvoerderId == 0)
-            return NotFound(new { message = "Aanvoerder profiel niet gevonden" });
+            return NotFound(new { message = "De aanvoeritems zijn niet beschikbaar omdat de veiling is verlopen." });
 
         var items = await _context.AanvoerItems
             .Where(i => i.AanvoerderId == aanvoerderId && i.Veildatum == date)
