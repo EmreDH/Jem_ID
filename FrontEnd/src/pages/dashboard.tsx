@@ -1,10 +1,9 @@
 import React from 'react';
-import './App.css';
 
 function Dashboard() {
     return (
-        <div className="App">
-            <h1>Dashboard</h1>
+        <div>
+            <h1>dit is de Dashboard</h1>
         </div>
     );
 }
