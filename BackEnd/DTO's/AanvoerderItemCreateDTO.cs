@@ -3,6 +3,7 @@ using BackEnd.Classes;
 public class AanvoerderItemCreateDTO
 {
     [Required] public string FotoUrl { get; set; } = string.Empty;
+    [Required] public string Naam_Product { get; set; } = string.Empty;
     [Required] public string Soort { get; set; } = string.Empty;
     public string? Potmaat { get; set; }
     public string? Steellengte { get; set; }

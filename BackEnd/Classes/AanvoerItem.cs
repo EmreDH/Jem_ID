@@ -13,6 +13,7 @@ namespace BackEnd.Classes
     public class AanvoerItem
     {
         public int Id { get; set; }
+        public string Naam_Product{ get; set; }
 
         public int AanvoerderId { get; set; }
         public Aanvoerder Aanvoerder { get; set; } = null!;
