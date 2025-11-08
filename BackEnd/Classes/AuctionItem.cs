@@ -10,7 +10,7 @@ public class AuctionItem
     public DateTime StartTimeUtc { get; set; }
     public DateTime EndTimeUtc { get; set; }
 
-    public decimal CurrentPrice { get; set; }      
+    public decimal CurrentPrice { get; set; }
     public int? CurrentLeaderId { get; set; }
     public User? CurrentLeader { get; set; }
 

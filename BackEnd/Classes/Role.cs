@@ -2,7 +2,7 @@ namespace BackEnd.Classes;
 
 public enum Role
 {
-    Klant,           
+    Klant,
     Admin,
     Aanvoerder,
     Veilingmeester,
