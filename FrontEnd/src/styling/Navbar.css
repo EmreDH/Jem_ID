@@ -1,42 +1,62 @@
 .navbar {
-    width: 220px;
-    height: 100vh;
-    background-color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  width: 220px;
+  height: 100vh;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  justify-content: flex-start;
 }
 
 .navbar-title {
-    color: #000000;
-    font-size: 1.5rem;
-    margin-bottom: 30px;
+  color: #000000;
+  font-size: 1.5rem;
+  margin-bottom: 30px;
 }
 
 .navbar-links {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.navbar-links a {
-    text-decoration: none;
-    color: #333;
-    padding: 10px 15px;
-    border-radius: 8px;
-    transition: background-color 0.2s ease;
-    font-weight: 500;
+.navbar-links .navbar-item {
+  display: block;
+  width: 100%;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-weight: 500;
+  text-align: left;
+  text-decoration: none;
+  color: #333;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.navbar-links a:hover {
-    background-color: #f0f2ff;
+.navbar-links .navbar-item:hover {
+  background-color: #f0f2ff;
 }
 
-.navbar-links a.active {
-    background-color: #e3e7ff;
-    color: #2d4ed6;
+.navbar-links .navbar-item.active {
+  background-color: #e3e7ff;
+  color: #2d4ed6;
+}
+
+.navbar-links .navbar-item--logout {
+  color: #b91c1c;
+}
+
+.navbar-links .navbar-item--logout:hover {
+  background-color: #fee2e2;
+}
+
+.navbar-links .navbar-item:focus-visible {
+  outline: 2px solid #93c5fd;
+  outline-offset: 2px;
 }

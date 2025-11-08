@@ -46,8 +46,8 @@ function HomePage() {
                 {/* Afbeelding */}
                 <div className="hero-image">
                     <img
-                        src="https://via.placeholder.com/500x350.png?text=Jem.ID+Innovation"
-                        alt="Digitale innovatie"
+                        src="https://lumencms.blob.core.windows.net/media/543/280222nw-jemid-diyou-_AS_7447-WEB-(1).jpg"
+                        alt="Eigenaar van jem_ID die achter de laptop zit met een koptelefoon op"
                     />
                 </div>
             </main>

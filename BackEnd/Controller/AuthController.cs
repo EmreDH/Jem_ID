@@ -64,15 +64,14 @@ public class AuthController : ControllerBase
 
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
+
         return Ok(new { message = "Registratie succesvol" });
     }
 
-    // endpoint om profielgegevens op te halen
     [Authorize]
     [HttpGet("profile")]
     public async Task<IActionResult> GetProfile()
     {
-        // Email claim uit token
         var email =
             User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Email)?.Value
             ?? User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
@@ -100,7 +99,7 @@ public class AuthController : ControllerBase
         return Ok(user);
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "admin")]
     [HttpPut("promote-admin")]
     public async Task<IActionResult> PromoteAdmin([FromBody] UpdateProfileDTO dto)
     {

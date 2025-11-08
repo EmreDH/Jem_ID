@@ -1,34 +1,56 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../styling/Navbar.css";
 
 function Navbar() {
-    const location = useLocation();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
-    return (
-        <nav className="navbar">
-            <h1 className="navbar-title">Jem_ID</h1>
+  function logout() {
+    localStorage.removeItem("token");
+    navigate("/login", { replace: true });
+  }
 
-            <ul className="navbar-links">
-                <li>
-                    <Link
-                        to="/dashboard"
-                        className={location.pathname === "/dashboard" ? "active" : ""}
-                    >
-                        📊 Dashboard
-                    </Link>
-                </li>
-                <li>
-                    <Link
-                        to="/veilingen"
-                        className={location.pathname === "/veilingen" ? "active" : ""}
-                    >
-                        📊 Veilingen
-                    </Link>
-                </li>
-            </ul>
-        </nav>
-    );
+  return (
+    <nav className="navbar">
+      <h1 className="navbar-title">Jem_ID</h1>
+
+      <ul className="navbar-links">
+        <li>
+          <Link
+            to="/dashboard"
+            className={`navbar-item ${
+              location.pathname === "/dashboard" ? "active" : ""
+            }`}
+          >
+            📊 Dashboard
+          </Link>
+        </li>
+
+        <li>
+          <Link
+            to="/veilingen"
+            className={`navbar-item ${
+              location.pathname === "/veilingen" ? "active" : ""
+            }`}
+          >
+            📊 Veilingen
+          </Link>
+        </li>
+
+        {token && (
+          <li>
+            <button
+              onClick={logout}
+              className="navbar-item navbar-item--logout"
+            >
+              Logout
+            </button>
+          </li>
+        )}
+      </ul>
+    </nav>
+  );
 }
 
 export default Navbar;
