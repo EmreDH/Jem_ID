@@ -30,7 +30,7 @@ function AanvoerderItem() {
           <h4 className="mb-4">Product Details</h4>
 
           <div className="row mb-3">
-            <div className="col-3">Naam Product</div>
+            <div className="col-3">Naam product</div>
             <div className="col-3">
               <input className="form-control" />
             </div>
