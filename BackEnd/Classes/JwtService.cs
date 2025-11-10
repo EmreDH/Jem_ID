@@ -3,45 +3,58 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
 
-namespace BackEnd.Classes;
-
-public class JwtService
+namespace BackEnd.Classes
 {
-    private readonly IConfiguration _config;
-    private readonly string _secret;
-    private readonly string _issuer;
-    private readonly string _audience;
-
-    public JwtService(IConfiguration config)
+    public class JwtService
     {
-        _config = config;
-        _secret   = config["Jwt:Key"]      ?? throw new ArgumentNullException("Jwt:Key not found");
-        _issuer   = config["Jwt:Issuer"]   ?? throw new ArgumentNullException("Jwt:Issuer not found");
-        _audience = config["Jwt:Audience"] ?? throw new ArgumentNullException("Jwt:Audience not found");
-    }
+        private readonly IConfiguration _config;
+        private readonly string _secret;
+        private readonly string _issuer;
+        private readonly string _audience;
 
-    public string GenerateToken(User user)
-    {
-        var claims = new[]
+        public JwtService(IConfiguration config)
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-            new Claim(JwtRegisteredClaimNames.Email, user.Email),
-            new Claim(ClaimTypes.Role, user.Role.ToString()),
-            new Claim(ClaimTypes.Email, user.Email)
-        };
+            _config = config ?? throw new ArgumentNullException(nameof(config));
 
-        var key   = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secret));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            _secret = _config["Jwt:Key"] ?? throw new ArgumentNullException("Jwt:Key not found");
+            _issuer = _config["Jwt:Issuer"] ?? throw new ArgumentNullException("Jwt:Issuer not found");
+            _audience = _config["Jwt:Audience"] ?? throw new ArgumentNullException("Jwt:Audience not found");
+        }
 
-        int minutes = int.TryParse(_config["Jwt:ExpirationInMinutes"], out var m) ? m : 120;
+        public string GenerateToken(User user, int? minutesOverride = null)
+        {
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
 
-        var token = new JwtSecurityToken(
-            issuer: _issuer,
-            audience: _audience,
-            claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(minutes),
-            signingCredentials: creds);
+            string roleNormalized = user.Role.ToString().ToLowerInvariant();
 
-        return new JwtSecurityTokenHandler().WriteToken(token);
+            var claims = new List<Claim>
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+
+                new Claim(ClaimTypes.Role, roleNormalized),
+
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secret));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            int minutes = minutesOverride
+                ?? (int.TryParse(_config["Jwt:ExpirationInMinutes"], out var m) ? m : 120);
+
+            var token = new JwtSecurityToken(
+                issuer: _issuer,
+                audience: _audience,
+                claims: claims,
+                notBefore: DateTime.UtcNow,
+                expires: DateTime.UtcNow.AddMinutes(minutes),
+                signingCredentials: creds
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
     }
 }

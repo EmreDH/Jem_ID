@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import "../styling/HomePage.css";
 
 function HomePage() {
   return (
@@ -72,51 +73,21 @@ function HomePage() {
             te plannen en duurzaam te groeien.
           </p>
 
-          <Link
-            to="/dashboard"
-            style={{
-              display: "inline-block",
-              marginTop: "30px",
-              backgroundColor: "#000",
-              color: "#fff",
-              padding: "12px 30px",
-              borderRadius: "25px",
-              textDecoration: "none",
-              fontWeight: "bold",
-            }}
-          >
+          <Link to="/dashboard" className="cta-button">
             Ontdek meer
           </Link>
         </div>
 
         {/* Afbeelding */}
-        <div style={{ maxWidth: "40%" }}>
+        <div className="hero-image">
           <img
-            src="https://via.placeholder.com/500x350.png?text=Jem.ID+Innovation"
-            alt="Digitale innovatie"
-            style={{ width: "100%", borderRadius: "10px" }}
+            src="https://lumencms.blob.core.windows.net/media/543/280222nw-jemid-diyou-_AS_7447-WEB-(1).jpg"
+            alt="Eigenaar van jem_ID die achter de laptop zit met een koptelefoon op"
           />
         </div>
       </main>
     </div>
   );
 }
-
-// 🌿 Herbruikbare stijlen
-const navLinkStyle: React.CSSProperties = {
-  color: "#000",
-  textDecoration: "none",
-  fontWeight: "500",
-  fontSize: "1rem",
-};
-
-const navButtonStyle: React.CSSProperties = {
-  backgroundColor: "#000",
-  color: "#fff",
-  padding: "8px 18px",
-  borderRadius: "20px",
-  textDecoration: "none",
-  fontWeight: "bold",
-};
 
 export default HomePage;

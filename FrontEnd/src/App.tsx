@@ -1,16 +1,19 @@
 import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import Dashboard from "./pages/dashboard";
-import Veilingen from "./pages/veilingen";
+import Dashboard from "./pages/Dashboard";
+import Veilingen from "./pages/Veilingen";
 import HomePage from "./pages/HomePage";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Contact from "./pages/Contact";
 import AanvoerderItem from "./pages/AanvoerderItem";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Forbidden from "./pages/Forbidden";
 
 function App(): JSX.Element {
   const location = useLocation();
+
   return (
     <div style={{ backgroundColor: "#F7F8FC", display: "flex" }}>
       {location.pathname !== "/" && <Navbar />}

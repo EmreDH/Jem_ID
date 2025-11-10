@@ -14,7 +14,7 @@ public class AanvoerderController : ControllerBase
 
     [Authorize(Roles = "Aanvoerder,Admin")]
     [HttpPost("addproduct")]
-    public async Task<IActionResult> Create([FromBody]  AanvoerderItemCreateDTO dto)
+    public async Task<IActionResult> Create([FromBody] AanvoerderItemCreateDTO dto)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -57,7 +57,7 @@ public class AanvoerderController : ControllerBase
     public async Task<IActionResult> Mine([FromQuery] DateOnly date)
     {
         if (date == default)
-        return BadRequest(new { message = "Parameter date is verplicht (yyyy-MM-dd)." });
+            return BadRequest(new { message = "Parameter date is verplicht (yyyy-MM-dd)." });
 
 
         var userId = User.GetUserId();

@@ -1,10 +1,20 @@
 name: .NET Build
 
 on:
-  push:
-    branches: [ main ]
+  workflow_dispatch:
+
   pull_request:
     branches: [ main ]
+    paths:
+      - 'BackEnd/**'
+      - '.github/workflows/**'
+
+  push:
+    branches: [ main ]
+    paths:
+      - 'BackEnd/**'
+      - '.github/workflows/**'
+
 
 jobs:
   build:

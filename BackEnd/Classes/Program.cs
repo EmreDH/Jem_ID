@@ -1,14 +1,14 @@
 using BackEnd.Classes;
-using Microsoft.EntityFrameworkCore;
+using BackEnd.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Security.Claims;
 using System.Text;
-using BackEnd.Data;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
-
 builder.Services
     .AddControllers()
     .AddJsonOptions(o =>
@@ -26,15 +26,22 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true,
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey =
-                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)
+            ),
+            RoleClaimType = ClaimTypes.Role,
+            NameClaimType = ClaimTypes.Email,
+            ClockSkew = TimeSpan.Zero
         };
     });
+
+builder.Services.AddAuthorization();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "backendAPI", Version = "v1" });
+
     var jwt = new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -52,6 +59,19 @@ builder.Services.AddSingleton<JwtService>();
 builder.Services.AddDbContext<ApplicationDbContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddCors(o =>
+{
+    o.AddPolicy("frontend", p =>
+        p.WithOrigins(
+             "http://localhost:3000",
+             "https://localhost:3000",
+             "http://localhost:5173"
+        )
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+    );
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -61,8 +81,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("frontend");
+
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
 app.Run();
