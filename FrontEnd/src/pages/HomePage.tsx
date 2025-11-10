@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 
 function HomePage() {
   return (
-    <div style={{ fontFamily: "Arial, sans-serif", backgroundColor: "#FFFFFF" }}>
+    <div
+      style={{ fontFamily: "Arial, sans-serif", backgroundColor: "#FFFFFF" }}
+    >
       {/* Header */}
       <header
         style={{
@@ -23,13 +25,23 @@ function HomePage() {
           <Link to="/veilingen" style={navLinkStyle}>
             Veilingen
           </Link>
+          <Link to="/aanvoerderItem" style={navLinkStyle}>
+            AanvoerderItem
+          </Link>
           <Link to="/contact" style={navLinkStyle}>
             Contact
           </Link>
           <Link to="/login" style={navButtonStyle}>
             Login
           </Link>
-          <Link to="/signup" style={{ ...navButtonStyle, backgroundColor: "#7ED957", color: "#000" }}>
+          <Link
+            to="/signup"
+            style={{
+              ...navButtonStyle,
+              backgroundColor: "#7ED957",
+              color: "#000",
+            }}
+          >
             Sign up
           </Link>
         </nav>
@@ -47,12 +59,17 @@ function HomePage() {
       >
         {/* Tekstgedeelte */}
         <div style={{ maxWidth: "50%" }}>
-          <h1 style={{ fontSize: "2.5rem", marginBottom: "20px", color: "#000" }}>
-            Leiders in digitale innovatie<br />voor sierteelt en AGF
+          <h1
+            style={{ fontSize: "2.5rem", marginBottom: "20px", color: "#000" }}
+          >
+            Leiders in digitale innovatie
+            <br />
+            voor sierteelt en AGF
           </h1>
           <p style={{ fontSize: "1.1rem", color: "#333", lineHeight: "1.6" }}>
-            Onze missie is het ontwikkelen van innovatieve software die bedrijven in de tuinbouwsector helpt
-            efficiënter te werken, slimmer te plannen en duurzaam te groeien.
+            Onze missie is het ontwikkelen van innovatieve software die
+            bedrijven in de tuinbouwsector helpt efficiënter te werken, slimmer
+            te plannen en duurzaam te groeien.
           </p>
 
           <Link

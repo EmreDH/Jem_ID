@@ -35,6 +35,7 @@ public class AanvoerderController : ControllerBase
         var item = new AanvoerItem
         {
             AanvoerderId = aanvoerder.Id,
+            Naam_Product = 
             FotoUrl = dto.FotoUrl.Trim(),
             Soort = dto.Soort.Trim(),
             Potmaat = string.IsNullOrWhiteSpace(dto.Potmaat) ? null : dto.Potmaat.Trim(),
