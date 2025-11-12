@@ -1,10 +1,8 @@
-/* Algemene stijl */
 .homepage {
     font-family: Arial, sans-serif;
     background-color: #ffffff;
 }
 
-/* Header */
 .header {
     display: flex;
     justify-content: space-between;
@@ -19,7 +17,6 @@
     font-weight: bold;
 }
 
-/* Navigatie */
 .nav {
     display: flex;
     gap: 25px;
@@ -51,13 +48,11 @@
     color: #000;
 }
 
-/* Hover effect */
 .nav-link:hover,
 .nav-button:hover {
     opacity: 0.8;
 }
 
-/* Hero Section */
 .hero {
     display: flex;
     align-items: center;
@@ -98,7 +93,6 @@
     background-color: #333;
 }
 
-/* Afbeelding */
 .hero-image {
     max-width: 40%;
 }
