@@ -20,25 +20,24 @@ function HomePage() {
         <h2 style={{ margin: 0, color: "#000", fontWeight: "bold" }}>Jem.id</h2>
 
         <nav style={{ display: "flex", gap: "25px", alignItems: "center" }}>
-          <Link to="/" style={navLinkStyle}>
+          <Link to="/" className="nav-link">
             Home
           </Link>
-          <Link to="/veilingen" style={navLinkStyle}>
+          <Link to="/veilingen" className="nav-link">
             Veilingen
           </Link>
-          <Link to="/aanvoerderItem" style={navLinkStyle}>
+          <Link to="/aanvoerderItem" className="nav-link">
             AanvoerderItem
           </Link>
-          <Link to="/contact" style={navLinkStyle}>
+          <Link to="/contact" className="nav-link">
             Contact
           </Link>
-          <Link to="/login" style={navButtonStyle}>
+          <Link to="/login" className="nav-link">
             Login
           </Link>
           <Link
             to="/signup"
             style={{
-              ...navButtonStyle,
               backgroundColor: "#7ED957",
               color: "#000",
             }}

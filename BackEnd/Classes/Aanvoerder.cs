@@ -7,5 +7,5 @@ public class Aanvoerder
     public int UserId { get; set; }
     public User User { get; set; } = null!;
 
-    public ICollection<AanvoerItem> AanvoerItems { get; set; } = new List<AanvoerItem>();
+    public ICollection<AanvoerderItem> AanvoerderItems { get; set; } = new List<AanvoerderItem>();
 }

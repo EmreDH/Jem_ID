@@ -10,7 +10,7 @@ namespace BackEnd.Data
 
         public DbSet<User> Users => Set<User>();
         public DbSet<Aanvoerder> Aanvoerders => Set<Aanvoerder>();
-        public DbSet<AanvoerItem> AanvoerItems => Set<AanvoerItem>();
+        public DbSet<AanvoerderItem> AanvoerderItems => Set<AanvoerderItem>();
         public DbSet<AuctionItem> AuctionItems => Set<AuctionItem>();
 
         protected override void OnModelCreating(ModelBuilder b)
@@ -44,13 +44,13 @@ namespace BackEnd.Data
                 .OnDelete(DeleteBehavior.Cascade);
            });
 
-            b.Entity<AanvoerItem>(e =>
+            b.Entity<AanvoerderItem>(e =>
              {
                  e.ToTable("AanvoerItems");
                  e.HasKey(x => x.Id);
 
                  e.HasOne(x => x.Aanvoerder)
-                 .WithMany(a => a.AanvoerItems)
+                 .WithMany(a => a.AanvoerderItems)
                  .HasForeignKey(x => x.AanvoerderId)
                  .OnDelete(DeleteBehavior.Cascade);
 

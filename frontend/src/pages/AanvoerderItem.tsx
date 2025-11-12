@@ -1,31 +1,76 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 
-function AanvoerderItem() {
+export default function AanvoerderItem() {
+  const [images, setImages] = useState<(string | null)[]>(Array(5).fill(null));
+  const fileInputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  const handleImageChange = (
+    index: number,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const newImages = [...images];
+      newImages[index] = URL.createObjectURL(file);
+      setImages(newImages);
+    }
+  };
+
+  const handleDivClick = (index: number) => {
+    fileInputRefs.current[index]?.click();
+  };
+
   return (
     <>
-      <div className=" d-flex flex-column justify-content-center align-items-center">
+      <div className="d-flex flex-column justify-content-center align-items-center">
         <div className="w-75 text-start mb-3">
           <h1>Add Product</h1>
         </div>
+
+        {/* ---------- FOTO UPLOAD ---------- */}
         <div className="border border-dark w-75 p-4 mb-3 shadow bg-light">
           <p className="align-self-start">Foto’s*</p>
-
           <div className="d-flex gap-5">
-            {[1, 2, 3, 4, 5].map((i) => (
-              <div
-                key={i}
-                className="border border-dark d-flex justify-content-center align-items-center shadow "
-                style={{
-                  width: "80px",
-                  height: "80px",
-                }}
-              >
-                <span>Image</span>
+            {[1, 2, 3, 4, 5].map((i, index) => (
+              <div key={i} className="position-relative">
+                <div
+                  className="border border-dark d-flex justify-content-center align-items-center shadow"
+                  style={{
+                    width: "80px",
+                    height: "80px",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => handleDivClick(index)}
+                >
+                  {images[index] ? (
+                    <img
+                      src={images[index] ?? ""}
+                      alt={`Foto ${i}`}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
+                    />
+                  ) : (
+                    <span>Image</span>
+                  )}
+                </div>
+
+                {/* ✅ Hidden file input */}
+                <input
+                  type="file"
+                  accept="image/*"
+                  style={{ display: "none" }}
+                  ref={(el) => (fileInputRefs.current[index] = el)}
+                  onChange={(e) => handleImageChange(index, e)}
+                />
               </div>
             ))}
           </div>
         </div>
 
+        {/* ---------- PRODUCT DETAILS ---------- */}
         <div className="border border-dark w-75 p-4 mb-3 shadow bg-light">
           <h4 className="mb-4">Product Details</h4>
 
@@ -37,7 +82,7 @@ function AanvoerderItem() {
 
             <div className="col-3">VeilDatum</div>
             <div className="col-3">
-              <input className="form-control" />
+              <input type="date" className="form-control" />
             </div>
           </div>
 
@@ -61,7 +106,13 @@ function AanvoerderItem() {
 
             <div className="col-3">Minimum prijs</div>
             <div className="col-3">
-              <input className="form-control" />
+              <input
+                type="number"
+                className="form-control"
+                step="0.01"
+                min="0"
+                placeholder="0.00"
+              />
             </div>
           </div>
 
@@ -73,16 +124,22 @@ function AanvoerderItem() {
 
             <div className="col-3">Gewenste kloklocatie</div>
             <div className="col-3">
-              <input className="form-control" />
+              <select className="form-select">
+                <option value="">-- Kies locatie --</option>
+                <option value="Aalsmeer">Aalsmeer</option>
+                <option value="Rijnsburg">Rijnsburg</option>
+                <option value="Naaldwijk">Naaldwijk</option>
+                <option value="Venlo">Venlo</option>
+              </select>
             </div>
           </div>
         </div>
 
+        {/* ---------- AANVOERDER INFO ---------- */}
         <div
           className="d-flex align-items-center border border-dark shadow w-75 p-4 mb-3 bg-light"
           style={{ width: "800px" }}
         >
-          {/* Foto upload */}
           <div className="text-center me-4">
             <div
               className="border border-secondary d-flex justify-content-center align-items-center rounded shadow-sm"
@@ -93,45 +150,28 @@ function AanvoerderItem() {
             <p className="mt-2 mb-0">Voornaam Achternaam</p>
           </div>
 
-          {/* Invoervelden */}
           <div className="flex-grow-1">
             <div className="row mb-2">
-              <div className="col">
-                <input
-                  type="email"
-                  className="form-control"
-                  defaultValue="Aanvoerder@outlook.com"
-                />
+              <div className="col border border-dark rounded m-1">
+                <p className="form-control-plaintext">Aanvoerder@outlook.com</p>
               </div>
-              <div className="col">
-                <input
-                  type="text"
-                  className="form-control"
-                  defaultValue="Straatnaam: De naam van de straat 44"
-                />
+              <div className="col border border-dark rounded m-1">
+                <p>Straatnaam: De naam van de straat 44</p>
               </div>
             </div>
 
             <div className="row">
-              <div className="col">
-                <input
-                  type="text"
-                  className="form-control"
-                  defaultValue="2429 KE, LaanLand"
-                />
+              <div className="col border border-dark rounded m-1">
+                <p>2429 KE, LaanLand</p>
               </div>
-              <div className="col">
-                <input
-                  type="text"
-                  className="form-control"
-                  defaultValue="Telefoonnummer: 1154856258514"
-                />
+              <div className="col border border-dark rounded m-1">
+                <p>Telefoonnummer: 1154856258514</p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Opslaan knop */}
+        {/* ---------- OPSLAAN KNOP ---------- */}
         <div className="d-flex justify-content-end w-75">
           <button
             className="btn btn-warning fw-bold shadow"
@@ -144,5 +184,3 @@ function AanvoerderItem() {
     </>
   );
 }
-
-export default AanvoerderItem;
