@@ -36,7 +36,7 @@ function Veilingen(): JSX.Element {
 
     return (
         <div className="veilingen-container">
-            {/* Sidebar */}
+            
             <aside className="sidebar">
                 <h3>Categorieën</h3>
                 <ul>
@@ -47,7 +47,7 @@ function Veilingen(): JSX.Element {
                 </ul>
             </aside>
 
-            {/* Hoofdinhoud */}
+
             <main className="main-content">
                 <h1>Actuele veilingen</h1>
                 <div className="veiling-list">

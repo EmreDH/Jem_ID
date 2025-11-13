@@ -29,10 +29,10 @@ function Login() {
 
       const data = await res.json();
 
-      // Token opslaan
+     
       localStorage.setItem("token", data.token);
 
-      // Rol uitlezen (mits je backend 'role' meestuurt in JWT)
+      
       const payload = parseJwt(data.token);
       const role = payload?.role?.toLowerCase();
 

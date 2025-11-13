@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-# Jem_ID"
-
-een complexe en veilige webapplicatie met database voor Jem_ID
-=======
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -49,4 +44,3 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
->>>>>>> 7ff63a6 (Added WCAG accessibility updates (Helmet titles, aria-labels, keyboard navigation))

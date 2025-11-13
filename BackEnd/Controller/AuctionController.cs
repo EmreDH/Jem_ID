@@ -11,9 +11,7 @@ public class AuctionController : ControllerBase
     private readonly ApplicationDbContext _context;
     public AuctionController(ApplicationDbContext context) => _context = context;
 
-    [Authorize(Roles = "Veilingmeester,Admin")]
-    [HttpPost("start/{aanvoerItemId:int}")]
-    public async Task<IActionResult> Start(int aanvoerItemId)
+    
     {
         var item = await _context.AanvoerItems
             .AsNoTracking()
