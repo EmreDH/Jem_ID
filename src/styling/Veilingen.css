@@ -1,0 +1,93 @@
+.veilingen-container {
+    display: flex;
+    min-height: 100vh;
+    background-color: #fafafa;
+}
+
+.sidebar {
+    width: 220px;
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-right: 1px solid #ddd;
+}
+
+.sidebar h3 {
+    margin-bottom: 15px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar li {
+    margin-bottom: 10px;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.sidebar li:hover {
+    color: #000;
+    font-weight: 500;
+}
+
+.main-content {
+    flex: 1;
+    padding: 30px;
+}
+
+.main-content h1 {
+    margin-bottom: 20px;
+}
+
+.veiling-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.veiling-item {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.veiling-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.veiling-item img {
+    width: 120px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-right: 20px;
+}
+
+.veiling-info {
+    flex: 1;
+}
+
+.veiling-info h3 {
+    margin: 0;
+    color: #000;
+}
+
+.veiling-info p {
+    margin: 5px 0 0;
+    color: #555;
+    font-size: 0.95rem;
+}
+
+.veiling-price {
+    font-size: 1rem;
+    color: #000;
+    font-weight: bold;
+}
