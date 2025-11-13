@@ -9,8 +9,8 @@ namespace BackEnd.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<User> Users => Set<User>();
-        public DbSet<Aanvoerder> Aanvoerders => Set<Aanvoerder>();
-        public DbSet<AanvoerderItem> AanvoerderItems => Set<AanvoerderItem>();
+        public DbSet<Aanvoerder> Aanvoerders { get; set; }
+        public DbSet<AanvoerderItem> AanvoerderItems { get; set; }
         public DbSet<AuctionItem> AuctionItems => Set<AuctionItem>();
 
         protected override void OnModelCreating(ModelBuilder b)
@@ -74,7 +74,7 @@ namespace BackEnd.Data
             {
                 e.ToTable("AuctionItems");
                 e.HasKey(x => x.Id);
-                e.HasOne(x => x.AanvoerItem)
+                e.HasOne(x => x.AanvoerderItems)
                 .WithOne()
                 .HasForeignKey<AuctionItem>(x => x.AanvoerItemId)
                 .OnDelete(DeleteBehavior.Cascade);
