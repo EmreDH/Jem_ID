@@ -3,6 +3,7 @@ using BackEnd.Classes;
 public class AanvoerderItemListDTO
 {
     public int Id { get; set; }
+    public string Naam_Product{ get; set; }
     public string FotoUrl { get; set; } = string.Empty;
     public string Soort { get; set; } = string.Empty;
     public string? Potmaat { get; set; }
