@@ -1,63 +1,107 @@
+/* ==== Container ==== */
 .profile-container {
-  padding: 40px;
-  width: 100%;
+    max-width: 750px;
+    margin: 40px auto;
+    padding: 20px;
+    font-family: system-ui, sans-serif;
 }
 
+/* ==== Header ==== */
 .profile-title {
-  color: #8dc63f;
-  font-size: 28px;
-  margin-bottom: 20px;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    text-align: center;
+    color: #111827;
 }
 
+/* ==== Card ==== */
 .profile-card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 30px;
-  width: 70%;
-  border: 1px solid #e5e5e5;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e5e7eb;
 }
 
 .profile-header {
-  font-size: 22px;
-  margin-bottom: 5px;
-  font-weight: 600;
+    font-size: 1.3rem;
+    margin-bottom: 5px;
+    color: #1f2937;
 }
 
 .profile-subtext {
-  font-size: 14px;
-  color: #777;
-  margin-bottom: 25px;
+    font-size: 0.95rem;
+    color: #6b7280;
+    margin-bottom: 25px;
 }
 
+/* ==== Inputs ==== */
 .input-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 18px;
 }
 
 .input-group label {
-  font-size: 14px;
-  margin-bottom: 5px;
-  font-weight: 500;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 6px;
 }
 
 .input-group input {
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 15px;
+    padding: 12px 14px;
+    font-size: 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    outline: none;
+    background: #f9fafb;
+    transition: border-color 0.2s ease, background 0.2s ease;
 }
 
+.input-group input:focus {
+    border-color: #2563eb;
+    background: #fff;
+}
+
+/* ==== Save button ==== */
 .save-btn {
-  background: black;
-  color: white;
-  padding: 12px 26px;
-  border-radius: 25px;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
+    margin-top: 10px;
+    width: 100%;
+    padding: 12px;
+    background: #111827;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s ease;
 }
 
 .save-btn:hover {
-  background: #222;
+    background: #1f2937;
+}
+
+/* ==== Message ==== */
+.profile-message {
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 12px;
+    border: 1px solid #bae6fd;
+    border-radius: 8px;
+    margin-bottom: 18px;
+    font-weight: 600;
+}
+
+/* ==== Responsive ==== */
+@media (max-width: 600px) {
+    .profile-card {
+        padding: 20px;
+    }
+
+    .profile-title {
+        font-size: 1.7rem;
+    }
 }
