@@ -37,6 +37,17 @@ function Navbar() {
             📊 Veilingen
           </Link>
         </li>
+        <li>
+    <Link
+        to="/profiel"
+        className={`navbar-item ${location.pathname === "/profiel" ? "active" : ""}`}
+    >
+         Profiel
+    </Link>
+</li>
+
+
+        
 
         {token && (
           <li>
