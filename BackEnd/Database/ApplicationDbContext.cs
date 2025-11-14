@@ -9,8 +9,8 @@ namespace BackEnd.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<User> Users => Set<User>();
-        public DbSet<Aanvoerder> Aanvoerders => Set<Aanvoerder>();
-        public DbSet<AanvoerItem> AanvoerItems => Set<AanvoerItem>();
+        public DbSet<Aanvoerder> Aanvoerders { get; set; }
+        public DbSet<AanvoerderItem> AanvoerderItems { get; set; }
         public DbSet<AuctionItem> AuctionItems => Set<AuctionItem>();
 
         protected override void OnModelCreating(ModelBuilder b)
@@ -44,13 +44,13 @@ namespace BackEnd.Data
                 .OnDelete(DeleteBehavior.Cascade);
            });
 
-            b.Entity<AanvoerItem>(e =>
+            b.Entity<AanvoerderItem>(e =>
              {
                  e.ToTable("AanvoerItems");
                  e.HasKey(x => x.Id);
 
                  e.HasOne(x => x.Aanvoerder)
-                 .WithMany(a => a.AanvoerItems)
+                 .WithMany(a => a.AanvoerderItems)
                  .HasForeignKey(x => x.AanvoerderId)
                  .OnDelete(DeleteBehavior.Cascade);
 
@@ -74,7 +74,7 @@ namespace BackEnd.Data
             {
                 e.ToTable("AuctionItems");
                 e.HasKey(x => x.Id);
-                e.HasOne(x => x.AanvoerItem)
+                e.HasOne(x => x.AanvoerderItems)
                 .WithOne()
                 .HasForeignKey<AuctionItem>(x => x.AanvoerItemId)
                 .OnDelete(DeleteBehavior.Cascade);

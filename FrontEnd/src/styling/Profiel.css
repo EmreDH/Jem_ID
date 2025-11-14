@@ -1,0 +1,63 @@
+.profile-container {
+  padding: 40px;
+  width: 100%;
+}
+
+.profile-title {
+  color: #8dc63f;
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+.profile-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 30px;
+  width: 70%;
+  border: 1px solid #e5e5e5;
+}
+
+.profile-header {
+  font-size: 22px;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.profile-subtext {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 25px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  font-size: 14px;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.input-group input {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+.save-btn {
+  background: black;
+  color: white;
+  padding: 12px 26px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.save-btn:hover {
+  background: #222;
+}
