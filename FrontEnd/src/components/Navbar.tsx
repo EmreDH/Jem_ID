@@ -38,6 +38,17 @@ function Navbar() {
           </Link>
         </li>
         <li>
+
+  <li>
+    <Link
+      to="/actuele-product"
+      className={`navbar-item ${location.pathname === "/actuele-product" ? "active" : ""}`}
+    >
+      🕒 Actuele Product
+    </Link>
+  </li>
+
+          
     <Link
         to="/profiel"
         className={`navbar-item ${location.pathname === "/profiel" ? "active" : ""}`}

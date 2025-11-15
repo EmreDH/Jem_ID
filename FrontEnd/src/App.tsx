@@ -11,7 +11,7 @@ import AanvoerderItem from "./pages/AanvoerderItem";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Forbidden from "./pages/Forbidden";
 import Profiel from "./pages/Profiel";
-
+import ActueleProduct from "./pages/ActueleProduct";
 
 function App(): JSX.Element {
   const location = useLocation();
@@ -29,7 +29,7 @@ function App(): JSX.Element {
           <Route path="/" element={<HomePage />} />
           <Route path="/veilingen" element={<Veilingen />} />
           <Route path="/profiel" element={<Profiel />} />
-
+          <Route path="/actuele-product" element={<ActueleProduct />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
