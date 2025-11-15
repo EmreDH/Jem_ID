@@ -7,9 +7,12 @@ import HomePage from "./pages/HomePage";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Contact from "./pages/Contact";
+import AanvoerderItem from "./pages/AanvoerderItem";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Forbidden from "./pages/Forbidden";
 import UpcomingProducts from "./pages/UpcomingProducts";
+import Profiel from "./pages/Profiel";
+
 
 function App(): JSX.Element {
   const location = useLocation();
@@ -21,9 +24,14 @@ function App(): JSX.Element {
         style={{
           flex: 1,
           marginLeft: location.pathname !== "/login" ? "20px" : "0",
-        }}>
+        }}
+      >
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/veilingen" element={<Veilingen />} />
+          <Route path="/profiel" element={<Profiel />} />
+
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/contact" element={<Contact />} />
@@ -48,6 +56,7 @@ function App(): JSX.Element {
             }
           />
 
+          <Route path="/AanvoerderItem" element={<AanvoerderItem />} />
           <Route path="*" element={<div>Not found</div>} />
         </Routes>
       </div>

@@ -12,18 +12,20 @@ public class AuctionController : ControllerBase
     public AuctionController(ApplicationDbContext context) => _context = context;
 
     [Authorize(Roles = "Veilingmeester,Admin")]
-    [HttpPost("start/{aanvoerItemId:int}")]
-    public async Task<IActionResult> Start(int aanvoerItemId)
+    [HttpPost("start/{aanvoerderItemId:int}")]
+    public async Task<IActionResult> Start(int aanvoerderItemId)
     {
-        var item = await _context.AanvoerItems
+        // ✅ Gebruik de juiste DbSet-naam uit ApplicationDbContext
+        var item = await _context.AanvoerderItems
             .AsNoTracking()
-            .FirstOrDefaultAsync(i => i.Id == aanvoerItemId);
+            .FirstOrDefaultAsync(i => i.Id == aanvoerderItemId);
 
         if (item is null)
-            return NotFound(new { message = "item niet gevonden" });
+            return NotFound(new { message = "Item niet gevonden" });
 
+        // ✅ Controleer of er al een veiling gestart is voor dit item
         var already = await _context.AuctionItems
-           .AnyAsync(a => a.AanvoerItemId == aanvoerItemId);
+            .AnyAsync(a => a.AanvoerItemId == aanvoerderItemId);
 
         if (already)
             return Conflict(new { message = "Voor dit item is er al een veiling gestart" });

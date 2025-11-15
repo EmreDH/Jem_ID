@@ -5,7 +5,7 @@ public class AuctionItem
     public int Id { get; set; }
 
     public int AanvoerItemId { get; set; }
-    public AanvoerItem AanvoerItem { get; set; } = null!;
+    public AanvoerderItem AanvoerderItems { get; set; } = null!;
 
     public DateTime StartTimeUtc { get; set; }
     public DateTime EndTimeUtc { get; set; }

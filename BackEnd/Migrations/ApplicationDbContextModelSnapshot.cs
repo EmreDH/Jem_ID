@@ -22,7 +22,7 @@ namespace backendAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BackEnd.Classes.AanvoerItem", b =>
+            modelBuilder.Entity("AanvoerderItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -46,14 +46,15 @@ namespace backendAPI.Migrations
                     b.Property<int>("Hoeveelheid")
                         .HasColumnType("int");
 
-                    b.Property<int?>("KoperId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("MinimumPrijs")
                         .HasPrecision(10, 2)
                         .HasColumnType("decimal(10,2)");
 
-                    b.Property<decimal?>("Opbrengst")
+                    b.Property<string>("Naam_Product")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Opbrengst")
                         .HasPrecision(10, 2)
                         .HasColumnType("decimal(10,2)");
 
@@ -182,10 +183,10 @@ namespace backendAPI.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("BackEnd.Classes.AanvoerItem", b =>
+            modelBuilder.Entity("AanvoerderItem", b =>
                 {
                     b.HasOne("BackEnd.Classes.Aanvoerder", "Aanvoerder")
-                        .WithMany("AanvoerItems")
+                        .WithMany("AanvoerderItems")
                         .HasForeignKey("AanvoerderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -206,7 +207,7 @@ namespace backendAPI.Migrations
 
             modelBuilder.Entity("BackEnd.Classes.AuctionItem", b =>
                 {
-                    b.HasOne("BackEnd.Classes.AanvoerItem", "AanvoerItem")
+                    b.HasOne("AanvoerderItem", "AanvoerderItems")
                         .WithOne()
                         .HasForeignKey("BackEnd.Classes.AuctionItem", "AanvoerItemId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -222,7 +223,7 @@ namespace backendAPI.Migrations
                         .HasForeignKey("CurrentLeaderId")
                         .OnDelete(DeleteBehavior.NoAction);
 
-                    b.Navigation("AanvoerItem");
+                    b.Navigation("AanvoerderItems");
 
                     b.Navigation("Buyer");
 
@@ -231,7 +232,7 @@ namespace backendAPI.Migrations
 
             modelBuilder.Entity("BackEnd.Classes.Aanvoerder", b =>
                 {
-                    b.Navigation("AanvoerItems");
+                    b.Navigation("AanvoerderItems");
                 });
 #pragma warning restore 612, 618
         }
