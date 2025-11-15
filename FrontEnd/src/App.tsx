@@ -9,6 +9,7 @@ import Signup from "./pages/Signup";
 import Contact from "./pages/Contact";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Forbidden from "./pages/Forbidden";
+import UpcomingProducts from "./pages/UpcomingProducts";
 
 function App(): JSX.Element {
   const location = useLocation();
@@ -27,11 +28,12 @@ function App(): JSX.Element {
           <Route path="/signup" element={<Signup />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/forbidden" element={<Forbidden />} />
+          <Route path="/aankomende-producten" element={<UpcomingProducts />}/>
 
           <Route
             path="/veilingen"
             element={
-              <ProtectedRoute roles={["klant", "admin"]}>
+              <ProtectedRoute roles={["Klant", "Admin"]}>
                 <Veilingen />
               </ProtectedRoute>
             }
@@ -40,7 +42,7 @@ function App(): JSX.Element {
           <Route
             path="/dashboard"
             element={
-              <ProtectedRoute roles={["admin"]}>
+              <ProtectedRoute roles={["Admin"]}>
                 <Dashboard />
               </ProtectedRoute>
             }
