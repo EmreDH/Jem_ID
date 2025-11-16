@@ -58,7 +58,7 @@ public class AuthController : ControllerBase
         {
             Name = request.Name.Trim(),
             Email = email,
-            Role = Role.Klant,
+            Role = Role.Admin,
             PasswordHash = PasswordHasher.HashPassword(request.Password)
         };
 
@@ -98,6 +98,45 @@ public class AuthController : ControllerBase
 
         return Ok(user);
     }
+
+    [Authorize]
+    [HttpPut("profile")]
+    public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileDTO dto)
+    {
+        if (dto == null)
+            return BadRequest(new { message = "Ongeldige input." });
+
+        var emailFromToken =
+            User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Email)?.Value
+            ?? User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+
+        if (string.IsNullOrWhiteSpace(emailFromToken))
+            return Unauthorized(new { message = "Geen geldige token gevonden" });
+
+        emailFromToken = emailFromToken.Trim().ToLowerInvariant();
+
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == emailFromToken);
+
+        if (user == null)
+            return NotFound(new { message = "Gebruiker niet gevonden" });
+
+        // Update name
+        if (!string.IsNullOrWhiteSpace(dto.Name))
+            user.Name = dto.Name.Trim();
+
+        // Update email
+        if (!string.IsNullOrWhiteSpace(dto.Email))
+            user.Email = dto.Email.Trim().ToLowerInvariant();
+
+        // Update password
+        if (!string.IsNullOrWhiteSpace(dto.Password))
+            user.PasswordHash = PasswordHasher.HashPassword(dto.Password);
+
+        await _context.SaveChangesAsync();
+
+        return Ok(new { message = "Profiel succesvol bijgewerkt!" });
+    }
+
 
     [Authorize(Roles = "admin")]
     [HttpPut("promote-admin")]
