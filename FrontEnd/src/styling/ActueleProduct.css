@@ -1,0 +1,36 @@
+.actuele-container {
+  max-width: 900px;
+}
+
+.timer-display {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #198754;
+}
+
+.img-fluid {
+  max-height: 250px;
+  object-fit: cover;
+}
+
+.info-section {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.bid-section h2 {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.actuele-card {
+  border: none;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+textarea.form-control {
+  resize: none;
+  min-height: 100px;
+}

@@ -1,109 +1,183 @@
-/* Algemene stijl */
-.homepage {
-    font-family: Arial, sans-serif;
-    background-color: #ffffff;
+/* GLOBAL */
+.homepage-container {
+  max-width: 1250px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  text-align: center;
 }
 
-/* Header */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 60px;
-    border-bottom: 1px solid #e0e0e0;
+/* ======================= HERO SECTION ======================= */
+
+.hero-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 50px;
+  padding: 40px 0;
 }
 
-.logo {
-    margin: 0;
-    color: #000;
-    font-weight: bold;
+.hero-left {
+  flex: 1;
+  text-align: left;
 }
 
-/* Navigatie */
-.nav {
-    display: flex;
-    gap: 25px;
-    align-items: center;
+.hero-left h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #003f2d;
+  margin-bottom: 20px;
 }
 
-.nav-link {
-    color: #000;
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 1rem;
+.hero-left p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #555;
+  margin-bottom: 25px;
 }
 
-.nav-button {
-    text-decoration: none;
-    font-weight: bold;
-    padding: 8px 18px;
-    border-radius: 20px;
-    transition: 0.2s;
+.hero-button {
+  display: inline-block;
+  background: #006b3f;
+  color: #fff;
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.2s;
 }
 
-.nav-button.black {
-    background-color: #000;
-    color: #fff;
+.hero-button:hover {
+  background: #004f2d;
 }
 
-.nav-button.green {
-    background-color: #7ed957;
-    color: #000;
+.hero-right img {
+  width: 480px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.08);
 }
 
-/* Hover effect */
-.nav-link:hover,
-.nav-button:hover {
-    opacity: 0.8;
+/* ======================= USP GRID ======================= */
+
+.usp-section {
+  margin-top: 90px;
 }
 
-/* Hero Section */
-.hero {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 80px 100px;
-    min-height: 80vh;
+.usp-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 40px;
+  color: #003f2d;
 }
 
-.hero-text {
-    max-width: 50%;
+.usp-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
 }
 
-.hero-text h1 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    color: #000;
+.usp-card {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.06);
+  transition: 0.2s;
 }
 
-.hero-text p {
-    font-size: 1.1rem;
-    color: #333;
-    line-height: 1.6;
+.usp-card:hover {
+  transform: translateY(-4px);
+}
+
+.usp-icon {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.usp-card h3 {
+  color: #003f2d;
+  margin-bottom: 8px;
+}
+
+.usp-card p {
+  color: #666;
+  font-size: 0.95rem;
+}
+
+/* ======================= STATS ======================= */
+
+.stats-section {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  margin: 80px 0;
+}
+
+.stat-box h3 {
+  font-size: 2rem;
+  color: #006b3f;
+}
+
+.stat-box p {
+  color: #444;
+}
+
+/* ======================= CTA ======================= */
+
+.cta-section {
+  background: #006b3f;
+  padding: 60px 30px;
+  border-radius: 15px;
+  color: white;
+  margin-bottom: 70px;
+}
+
+.cta-section h2 {
+  font-size: 2rem;
+  margin-bottom: 15px;
+}
+
+.cta-section p {
+  margin-bottom: 25px;
+  font-size: 1.1rem;
 }
 
 .cta-button {
-    display: inline-block;
-    margin-top: 30px;
-    background-color: #000;
-    color: #fff;
-    padding: 12px 30px;
-    border-radius: 25px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: 0.2s;
+  display: inline-block;
+  background: white;
+  color: #006b3f;
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.2s;
 }
 
 .cta-button:hover {
-    background-color: #333;
+  background: #e5e5e5;
 }
 
-/* Afbeelding */
-.hero-image {
-    max-width: 40%;
+/* ======================= RESPONSIVE ======================= */
+
+@media (max-width: 1020px) {
+  .hero-section {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .hero-left {
+    text-align: center;
+  }
+
+  .usp-grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
-.hero-image img {
+@media (max-width: 600px) {
+  .usp-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-right img {
     width: 100%;
-    border-radius: 10px;
+  }
 }
