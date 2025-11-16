@@ -10,6 +10,9 @@ import Contact from "./pages/Contact";
 import AanvoerderItem from "./pages/AanvoerderItem";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Forbidden from "./pages/Forbidden";
+import UpcomingProducts from "./pages/UpcomingProducts";
+import Profiel from "./pages/Profiel";
+
 
 function App(): JSX.Element {
   const location = useLocation();
@@ -26,10 +29,33 @@ function App(): JSX.Element {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/veilingen" element={<Veilingen />} />
+          <Route path="/profiel" element={<Profiel />} />
+
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/forbidden" element={<Forbidden />} />
+          <Route path="/aankomende-producten" element={<UpcomingProducts />}/>
+
+          <Route
+            path="/veilingen"
+            element={
+              <ProtectedRoute roles={["Klant", "Admin"]}>
+                <Veilingen />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute roles={["Admin"]}>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+
           <Route path="/AanvoerderItem" element={<AanvoerderItem />} />
           <Route path="*" element={<div>Not found</div>} />
         </Routes>

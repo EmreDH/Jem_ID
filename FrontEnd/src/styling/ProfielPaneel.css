@@ -1,0 +1,110 @@
+.profiel-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #fff;
+  color: #000;
+  font-family: "Poppins", sans-serif;
+}
+
+.profiel-container {
+  width: 80%;
+  max-width: 1000px;
+  margin: 60px auto;
+}
+
+.profiel-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #9cc400; /* your green accent */
+  margin-bottom: 10px;
+}
+
+.profiel-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.tab {
+  border: 1px solid #ccc;
+  background: none;
+  padding: 6px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tab:hover {
+  border-color: #9cc400;
+  color: #9cc400;
+}
+
+.tab-active {
+  background-color: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+.profiel-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 30px;
+}
+
+.profiel-card-header {
+  font-weight: 600;
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+}
+
+.profiel-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-label {
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+input:focus {
+  border-color: #9cc400;
+}
+
+.form-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.save-btn {
+  background-color: #000;
+  color: #fff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.save-btn:hover {
+  background-color: #9cc400;
+  color: #000;
+}
