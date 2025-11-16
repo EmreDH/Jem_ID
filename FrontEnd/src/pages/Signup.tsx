@@ -48,57 +48,67 @@ function Signup() {
 
   return (
     <div className="auth-container">
-      <div className="auth-card shadow">
-        <h2 className="text-center mb-4 fw-bold text-success">Account aanmaken</h2>
+      <div className="auth-card shadow" role="form" aria-labelledby="signup-title">
+        <h2 id="signup-title" className="text-center mb-4 fw-bold text-success">
+          Account aanmaken
+        </h2>
 
         {error && <div className="alert alert-danger">{error}</div>}
 
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label className="form-label">E-mail</label>
+            <label htmlFor="email" className="form-label">E-mail</label>
             <input
+              id="email"
               type="email"
               className="form-control"
               placeholder="Voer je e-mailadres in"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              aria-required="true"
             />
           </div>
 
           <div className="mb-3">
-            <label className="form-label">Naam</label>
+            <label htmlFor="name" className="form-label">Naam</label>
             <input
+              id="name"
               type="text"
               className="form-control"
               placeholder="Voer je naam in"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
+              aria-required="true"
             />
           </div>
 
           <div className="mb-3">
-            <label className="form-label">Wachtwoord</label>
+            <label htmlFor="password" className="form-label">Wachtwoord</label>
             <input
+              id="password"
               type="password"
               className="form-control"
               placeholder="Voer een wachtwoord in"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              aria-required="true"
             />
           </div>
 
           <div className="mb-4">
-            <label className="form-label">Bevestig wachtwoord</label>
+            <label htmlFor="confirm" className="form-label">Bevestig wachtwoord</label>
             <input
+              id="confirm"
               type="password"
               className="form-control"
               placeholder="Herhaal je wachtwoord"
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
               required
+              aria-required="true"
             />
           </div>
 

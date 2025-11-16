@@ -1,31 +1,37 @@
+/* Center page layout */
 .auth-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  min-height: 100vh;
+  padding: 20px;
   background-color: #f9fafb;
 }
 
+/* Card styling */
 .auth-card {
   background: #fff;
-  border-radius: 16px;
-  padding: 3rem 2.5rem;
+  border-radius: 12px;
+  padding: 2.5rem 2rem;
   width: 100%;
-  max-width: 420px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 420px; /* Prevents full-screen stretch */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
+/* Heading */
 .auth-card h2 {
   color: #198754;
   font-weight: 700;
 }
 
+/* Input fields */
 .auth-card .form-control {
   border-radius: 8px;
-  border: 1px solid #d0d7de;
+  border: 1px solid #ced4da;
   padding: 10px 12px;
 }
 
+/* Button */
 .auth-card .btn-success {
   background-color: #198754;
   border: none;
@@ -37,6 +43,7 @@
   background-color: #157347;
 }
 
+/* Links */
 .auth-card a {
   text-decoration: none;
   color: #198754;
@@ -45,4 +52,11 @@
 .auth-card a:hover {
   text-decoration: underline;
   color: #146c43;
+}
+
+/* Improve spacing on small screens */
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 1.5rem;
+  }
 }

@@ -41,33 +41,39 @@ function Login() {
 
   return (
     <div className="auth-container">
-      <div className="auth-card shadow">
-        <h2 className="text-center mb-4 fw-bold text-success">Inloggen</h2>
+      <div className="auth-card shadow" role="form" aria-labelledby="login-title">
+        <h2 id="login-title" className="text-center mb-4 fw-bold text-success">
+          Inloggen
+        </h2>
 
         {error && <div className="alert alert-danger">{error}</div>}
 
         <form onSubmit={handleLogin}>
           <div className="mb-3">
-            <label className="form-label">E-mail</label>
+            <label htmlFor="email" className="form-label">E-mail</label>
             <input
+              id="email"
               type="email"
               className="form-control"
               placeholder="Voer je e-mailadres in"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              aria-required="true"
             />
           </div>
 
           <div className="mb-3">
-            <label className="form-label">Wachtwoord</label>
+            <label htmlFor="password" className="form-label">Wachtwoord</label>
             <input
+              id="password"
               type="password"
               className="form-control"
               placeholder="Voer je wachtwoord in"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              aria-required="true"
             />
           </div>
 

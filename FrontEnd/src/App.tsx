@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
 import HomePage from "./pages/HomePage";
@@ -16,23 +16,18 @@ import Veilingen from "./pages/Veilingen";
 import Footer from "./components/Footer";
 
 function App(): JSX.Element {
-  const location = useLocation();
-
   return (
     <div
       style={{
         display: "flex",
         flexDirection: "column",
-        minHeight: "100vh", // full height layout
-        backgroundColor: "#F7F8FC", // page background
+        minHeight: "100vh",
+        backgroundColor: "#F7F8FC",
       }}
     >
-      {/* Navbar hidden on login/signup pages */}
-      {location.pathname !== "/login" && location.pathname !== "/signup" && (
-        <Navbar />
-      )}
+      {/* ✅ Navbar ALWAYS visible now */}
+      <Navbar />
 
-      {/* Main content fills available space */}
       <div style={{ flex: 1 }}>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -55,6 +50,7 @@ function App(): JSX.Element {
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/dashboard"
             element={
@@ -69,7 +65,6 @@ function App(): JSX.Element {
         </Routes>
       </div>
 
-      {/* Footer always at the bottom */}
       <Footer />
     </div>
   );

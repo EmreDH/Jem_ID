@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styling/Navbar.css";
+
 import { isLoggedIn, getUserRole, logout } from "../lib/auth";
 import { hasPermission } from "../lib/permissions";
 
@@ -17,14 +18,17 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-success shadow-sm fixed-top">
+    <nav
+      className="navbar navbar-expand-lg navbar-dark bg-success shadow-sm fixed-top main-navbar"
+      aria-label="Main navigation"
+    >
       <div className="container">
-        {/* Brand / Logo */}
-        <Link className="navbar-brand fw-bold" to="/">
+        {/* Brand */}
+        <Link className="navbar-brand fw-bold" to="/" aria-label="Go to homepage">
           jem.id
         </Link>
 
-        {/* Mobile toggle button */}
+        {/* Toggle */}
         <button
           className="navbar-toggler"
           type="button"
@@ -37,10 +41,11 @@ const Navbar: React.FC = () => {
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        {/* Navbar links */}
+        {/* Links */}
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto align-items-center">
-            {/* Everyone can see these */}
+
+            {/* PUBLIC LINKS */}
             <li className="nav-item">
               <Link
                 to="/"
@@ -53,22 +58,18 @@ const Navbar: React.FC = () => {
             <li className="nav-item">
               <Link
                 to="/contact"
-                className={`nav-link ${
-                  location.pathname === "/contact" ? "active" : ""
-                }`}
+                className={`nav-link ${location.pathname === "/contact" ? "active" : ""}`}
               >
                 Contact
               </Link>
             </li>
 
-            {/* Role-based menu items */}
+            {/* ROLE-BASED */}
             {hasPermission("viewVeilingen") && (
               <li className="nav-item">
                 <Link
                   to="/veilingen"
-                  className={`nav-link ${
-                    location.pathname === "/veilingen" ? "active" : ""
-                  }`}
+                  className={`nav-link ${location.pathname === "/veilingen" ? "active" : ""}`}
                 >
                   Veilingen
                 </Link>
@@ -79,9 +80,7 @@ const Navbar: React.FC = () => {
               <li className="nav-item">
                 <Link
                   to="/dashboard"
-                  className={`nav-link ${
-                    location.pathname === "/dashboard" ? "active" : ""
-                  }`}
+                  className={`nav-link ${location.pathname === "/dashboard" ? "active" : ""}`}
                 >
                   Dashboard
                 </Link>
@@ -92,9 +91,7 @@ const Navbar: React.FC = () => {
               <li className="nav-item">
                 <Link
                   to="/actuele-product"
-                  className={`nav-link ${
-                    location.pathname === "/actuele-product" ? "active" : ""
-                  }`}
+                  className={`nav-link ${location.pathname === "/actuele-product" ? "active" : ""}`}
                 >
                   Productbeheer
                 </Link>
@@ -105,40 +102,38 @@ const Navbar: React.FC = () => {
               <li className="nav-item">
                 <Link
                   to="/profiel"
-                  className={`nav-link ${
-                    location.pathname === "/profiel" ? "active" : ""
-                  }`}
+                  className={`nav-link ${location.pathname === "/profiel" ? "active" : ""}`}
                 >
                   Profiel
                 </Link>
               </li>
             )}
 
-            {/* Right-side user actions */}
+            {/* AUTH BUTTONS */}
             {!loggedIn ? (
-              <>
-                <li className="nav-item ms-3">
-                  <Link to="/login" className="btn btn-light btn-sm me-2">
-                    Login
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="/signup" className="btn btn-outline-light btn-sm">
-                    Sign Up
-                  </Link>
-                </li>
-              </>
+              <li className="nav-item ms-3 d-flex align-items-center gap-2">
+                <Link to="/login" className="auth-btn login-btn">
+                  Login
+                </Link>
+
+                <Link to="/signup" className="auth-btn signup-btn">
+                  Sign Up
+                </Link>
+              </li>
             ) : (
-              <>
-                <li className="nav-item ms-3">
-                  <span className="text-white me-3 small">
-                    Ingelogd als: <strong>{role}</strong>
-                  </span>
-                  <button onClick={handleLogout} className="btn btn-light btn-sm">
-                    Logout
-                  </button>
-                </li>
-              </>
+              <li className="nav-item ms-3 d-flex align-items-center gap-3">
+                <span className="text-white small">
+                  Ingelogd als: <strong>{role}</strong>
+                </span>
+
+                <button
+                  onClick={handleLogout}
+                  className="auth-btn logout-btn"
+                  aria-label="Log out"
+                >
+                  Logout
+                </button>
+              </li>
             )}
           </ul>
         </div>

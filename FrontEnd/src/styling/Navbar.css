@@ -1,32 +1,76 @@
-.navbar {
+/* Prevent content being pushed under navbar */
+body {
+  padding-top: 70px !important;
+}
+
+/* Smooth animation */
+.main-navbar {
   transition: all 0.3s ease;
 }
 
+/* Brand */
 .navbar-brand {
   font-size: 1.5rem;
   letter-spacing: 0.5px;
 }
 
+/* Normal nav links */
 .nav-link {
   color: #ffffff !important;
   font-weight: 500;
-  transition: color 0.2s ease;
+  transition: 0.25s ease;
 }
 
 .nav-link:hover {
   color: #d4edda !important;
 }
 
+/* Active state */
 .nav-link.active {
-  color: #fff;
-  border-bottom: 2px solid #ffffff;
+  color: #fff !important;
+  border-bottom: 2px solid #fff;
 }
 
-.btn-light {
-  font-weight: 500;
+/* AUTH BUTTONS (Login / Sign Up / Logout) */
+.auth-btn {
+  padding: 6px 18px;
   border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
 }
 
-body {
-  padding-top: 70px; /* Prevent navbar overlap with content */
+/* Login = white filled */
+.login-btn {
+  background: #ffffff;
+  color: #0f5132 !important;
+  border: none;
+}
+
+.login-btn:hover {
+  background: #e8e8e8;
+}
+
+/* Signup = white outline */
+.signup-btn {
+  background: transparent;
+  color: #ffffff !important;
+  border: 2px solid #ffffff;
+}
+
+.signup-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Logout button (same style as login) */
+.logout-btn {
+  background: #ffffff;
+  color: #0f5132 !important;
+  border: none;
+}
+
+.logout-btn:hover {
+  background: #e8e8e8;
 }
