@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../styling/ActueleProduct.css";
 
 const ActueleProduct: React.FC = () => {
-  // placeholder states for now
+  // placeholder states
   const [timeLeft, setTimeLeft] = useState(3600); // 1 hour
   const [currentBid, setCurrentBid] = useState(125.0);
   const [description, setDescription] = useState("Kist met 10 kg verse tomaten van lokale telers");
   const [isEditing, setIsEditing] = useState(false);
 
-  // basic countdown logic
+  // countdown timer
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft((t) => (t > 0 ? t - 1 : 0));
@@ -24,64 +24,74 @@ const ActueleProduct: React.FC = () => {
   };
 
   return (
-    <div className="actuele-container">
-      <header className="actuele-header">
-        <h2>jem.id</h2>
-        <div className="header-menu">
-          <span>nl | en</span>
-          <button className="menu-btn">menu</button>
+    <div className="container actuele-container py-5">
+      <div className="card shadow-lg actuele-card">
+        <div className="card-header bg-success text-white text-center">
+          <h3>Actuele Product</h3>
+          <p className="mb-0">Live veiling in uitvoering</p>
         </div>
-      </header>
 
-      <main className="actuele-main">
-        <section className="omschrijving card">
-          <h3>Omschrijving</h3>
-          {isEditing ? (
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          ) : (
-            <p>{description}</p>
-          )}
-          <button onClick={() => setIsEditing(!isEditing)}>
-            {isEditing ? "Opslaan" : "Bewerken"}
-          </button>
-        </section>
+        <div className="card-body">
+          {/* Timer */}
+          <div className="timer-box text-center mb-4">
+            <h5>Resterende tijd</h5>
+            <div className="timer-display">{formatTime(timeLeft)}</div>
+          </div>
 
-        <section className="tijd-datum card">
-          <h4>Tijd / Datum</h4>
-          <p>{formatTime(timeLeft)}</p>
-        </section>
+          {/* Product images */}
+          <div className="row mb-4">
+            <div className="col-md-6 text-center">
+              <img src="/images/tomaat1.jpg" alt="Product 1" className="img-fluid rounded" />
+            </div>
+            <div className="col-md-6 text-center">
+              <img src="/images/tomaat2.jpg" alt="Product 2" className="img-fluid rounded" />
+            </div>
+          </div>
 
-        <section className="afbeeldingen">
-          <div className="product-image">Afbeelding product 1</div>
-          <div className="product-image">Afbeelding product 2</div>
-        </section>
+          {/* Description */}
+          <div className="mb-4">
+            <h5>Omschrijving</h5>
+            {isEditing ? (
+              <textarea
+                className="form-control"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            ) : (
+              <p>{description}</p>
+            )}
+            <button
+              className="btn btn-outline-success mt-2"
+              onClick={() => setIsEditing(!isEditing)}
+            >
+              {isEditing ? "Opslaan" : "Bewerken"}
+            </button>
+          </div>
 
-        <section className="beschrijving card">
-          <h4>Product-Beschrijving</h4>
-          <p>Verse tomaten rechtstreeks van de kweker.</p>
-        </section>
+          {/* Auction info */}
+          <div className="info-section mb-4">
+            <h5>Veilinginformatie</h5>
+            <p><strong>Veilingmaster:</strong> Jan de Veilingmeester</p>
+            <p><strong>Locatie:</strong> Aalsmeer</p>
+          </div>
 
-        <section className="veiling-info card">
-          <h4>Informatie Veilingmaster</h4>
-          <p>Naam: Jan de Veilingmeester</p>
-          <p>Locatie: Aalsmeer</p>
-        </section>
+          {/* Bid section */}
+          <div className="bid-section text-center">
+            <h5>Huidig bod</h5>
+            <h2 className="text-success">€ {currentBid.toFixed(2)}</h2>
+            <button
+              className="btn btn-success btn-lg mt-3"
+              onClick={() => setCurrentBid((b) => b + 2.5)}
+            >
+              Plaats bod (+€2,50)
+            </button>
+          </div>
+        </div>
 
-        <section className="bod card">
-          <h4>Huidig bod: €{currentBid.toFixed(2)}</h4>
-          <button
-            className="bid-btn"
-            onClick={() => setCurrentBid((b) => b + 2.5)}
-          >
-            Plaats bod (+€2,50)
-          </button>
-        </section>
-
-        <button className="volgende-product">Volgende Product</button>
-      </main>
+        <div className="card-footer text-center bg-light">
+          <button className="btn btn-outline-secondary">Volgende Product</button>
+        </div>
+      </div>
     </div>
   );
 };
