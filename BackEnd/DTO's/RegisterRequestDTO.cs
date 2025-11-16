@@ -1,5 +1,5 @@
-
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using BackEnd.Classes; // 👈 Add this so we can use the Role enum
 
 public class RegisterRequestDTO
 {
@@ -13,4 +13,7 @@ public class RegisterRequestDTO
     [Required(ErrorMessage = "Wachtwoord is verplicht")]
     [MinLength(8, ErrorMessage = "Wachtwoord moet minimaal 8 tekens bevatten")]
     public string Password { get; set; }
+
+    // 👇 Optional Role — only used by backend or admin panel
+    public Role? Role { get; set; }
 }
