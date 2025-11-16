@@ -1,52 +1,74 @@
-<<<<<<< HEAD
-# Jem_ID"
+![Logo van Jem_ID](https://westlandwerk.nl/resources/logo/jem-logo-def-zwart-witruimte.png)
 
-een complexe en veilige webapplicatie met database voor Jem_ID
-=======
-# Getting Started with Create React App
+De opdracht is om een gebruiksvriendelijke (mogelijk realtime) digitale veilingklok te maken voor de sierteeltsector in opdracht van Royal FloraHolland. Met Jem_ID kunnen producten digitaal geveild en verkocht worden aan meerdere kopers tegelijkertijd.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Het systeem is opgesplitst in twee project, namelijk:
 
-## Available Scripts
+- **Back end**: Verantwoordelijk voor
+- **Front end**: Verantwoordelijk voor
 
-In the project directory, you can run:
+## Systeemvereisten
 
-### `npm start`
+- **Back end**
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+  - .NET SDK 9.X
+    Te installeren via Microsoft's officiële .NET-pagina.
+  - Entity Framework Core
+    Nodig voor de database-togeang en migraties.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- **Database SQL Server**
 
-### `npm test`
+  - Microsoft SQL Server
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Front end**
+  - Node.js (aanbevolen: actuele LTS-versie)
+  - NPM als packagemanager
 
-### `npm run build`
+## Setup
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Dit zijn de instructies om het project lokaal op te zetten. Volg deze stappen om de back end en de front end lokaal werkende te krijgen.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Het project maakt gebruik van een database. Voer de volgende acties uit om de database beschikbaar te stellen:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Voeg de `DefaultConnection` string toe in je project secrets. Dit kan je doen door met rechtermuisknop te klikken op `backendAPI.csproj` -> `Manage User Secrets` (in VScode met .NET extensies).
 
-### `npm run eject`
+   ```
+   {
+     "ConnectionStrings": {
+       "DefaultConnection": "Server=EMRE\\SQLEXPRESS;Database=JemID;Trusted_Connection=True;TrustServerCertificate=True;"
+     }
+   }
+   ```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+2. We maken gebruik van Entity Framework en de [CLI](https://learn.microsoft.com/en-us/ef/core/cli/dotnet) daarvan. Installeer de tools als volgt:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+   ```
+   dotnet tool install --global dotnet-ef
+   ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+3. Nu dat de connection string is configureert en de [Entity Framework CLI](https://learn.microsoft.com/en-us/ef/core/cli/dotnet) is geïnstalleerd. Kunnen we de database migreren door de volgende commando uit te voeren:
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+   ```
+   cd ./BackEnd
+   dotnet ef database update
+   ```
 
-## Learn More
+Om de back end op te starten voer de volgende commando's uit:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+cd ./BackEnd
+dotnet run
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
->>>>>>> 7ff63a6 (Added WCAG accessibility updates (Helmet titles, aria-labels, keyboard navigation))
+Nu dat de back end draait kunnen we de front end opstarten. Voor de volgende commando's uit om de front end op te starten:
+
+```
+cd ./FronEnd
+npm install
+npm start
+```
+
+## Referenties
+
+- [Case digitale veilingklok 2025-2026](https://brightspace.hhs.nl/content/enforced/145034-H-ICT-SE3-25_2025_FALL_1/Case%20digitale%20veilingklok%202025-2026.pdf?ou=145034)
+- [Extra systeemeisen](https://brightspace.hhs.nl/content/enforced/145034-H-ICT-SE3-25_2025_FALL_1/Extra%20systeemeisen.html?ou=145034&d2l_body_type=3)
