@@ -27,7 +27,7 @@ namespace BackEnd.Controller
         [HttpPost("start/{aanvoerderItemId:int}")]
         public async Task<IActionResult> Start(int aanvoerderItemId)
         {
-            var item = await _context.AanvoerderItems
+            var item = await _context.AanvoerItems
                 .AsNoTracking()
                 .FirstOrDefaultAsync(i => i.Id == aanvoerderItemId);
 

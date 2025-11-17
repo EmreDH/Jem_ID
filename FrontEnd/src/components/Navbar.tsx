@@ -24,7 +24,11 @@ const Navbar: React.FC = () => {
     >
       <div className="container">
         {/* Brand */}
-        <Link className="navbar-brand fw-bold" to="/" aria-label="Go to homepage">
+        <Link
+          className="navbar-brand fw-bold"
+          to="/"
+          aria-label="Go to homepage"
+        >
           jem.id
         </Link>
 
@@ -44,12 +48,13 @@ const Navbar: React.FC = () => {
         {/* Links */}
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto align-items-center">
-
             {/* PUBLIC LINKS */}
             <li className="nav-item">
               <Link
                 to="/"
-                className={`nav-link ${location.pathname === "/" ? "active" : ""}`}
+                className={`nav-link ${
+                  location.pathname === "/" ? "active" : ""
+                }`}
               >
                 Home
               </Link>
@@ -58,7 +63,9 @@ const Navbar: React.FC = () => {
             <li className="nav-item">
               <Link
                 to="/contact"
-                className={`nav-link ${location.pathname === "/contact" ? "active" : ""}`}
+                className={`nav-link ${
+                  location.pathname === "/contact" ? "active" : ""
+                }`}
               >
                 Contact
               </Link>
@@ -69,7 +76,9 @@ const Navbar: React.FC = () => {
               <li className="nav-item">
                 <Link
                   to="/veilingen"
-                  className={`nav-link ${location.pathname === "/veilingen" ? "active" : ""}`}
+                  className={`nav-link ${
+                    location.pathname === "/veilingen" ? "active" : ""
+                  }`}
                 >
                   Veilingen
                 </Link>
@@ -80,7 +89,9 @@ const Navbar: React.FC = () => {
               <li className="nav-item">
                 <Link
                   to="/dashboard"
-                  className={`nav-link ${location.pathname === "/dashboard" ? "active" : ""}`}
+                  className={`nav-link ${
+                    location.pathname === "/dashboard" ? "active" : ""
+                  }`}
                 >
                   Dashboard
                 </Link>
@@ -91,9 +102,24 @@ const Navbar: React.FC = () => {
               <li className="nav-item">
                 <Link
                   to="/actuele-product"
-                  className={`nav-link ${location.pathname === "/actuele-product" ? "active" : ""}`}
+                  className={`nav-link ${
+                    location.pathname === "/actuele-product" ? "active" : ""
+                  }`}
                 >
                   Productbeheer
+                </Link>
+              </li>
+            )}
+
+            {hasPermission("viewAanvoerderItem") && (
+              <li className="nav-item">
+                <Link
+                  to="/AanvoerderItem"
+                  className={`nav-link ${
+                    location.pathname === "/AanvoerderItem" ? "active" : ""
+                  }`}
+                >
+                  AanvoerderItem
                 </Link>
               </li>
             )}
@@ -102,9 +128,11 @@ const Navbar: React.FC = () => {
               <li className="nav-item">
                 <Link
                   to="/profiel"
-                  className={`nav-link ${location.pathname === "/profiel" ? "active" : ""}`}
+                  className={`nav-link ${
+                    location.pathname === "/profiel" ? "active" : ""
+                  }`}
                 >
-                  Profiel
+                  Profiels
                 </Link>
               </li>
             )}

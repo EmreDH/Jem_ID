@@ -11,7 +11,7 @@ namespace BackEnd.Data
 
         public DbSet<User> Users => Set<User>();
         public DbSet<Aanvoerder> Aanvoerders => Set<Aanvoerder>();
-        public DbSet<AanvoerderItem> AanvoerderItems => Set<AanvoerderItem>();
+        public DbSet<AanvoerderItem> AanvoerItems => Set<AanvoerderItem>();
         public DbSet<AuctionItem> AuctionItems => Set<AuctionItem>();
 
         protected override void OnModelCreating(ModelBuilder b)
@@ -40,14 +40,13 @@ namespace BackEnd.Data
 
                 e.HasMany(a => a.Items)
                     .WithOne(i => i.Aanvoerder)
-                    .HasForeignKey(i => i.AanvoerderId)
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
             // AANVOERDER ITEM
             b.Entity<AanvoerderItem>(e =>
             {
-                e.ToTable("AanvoerderItems");
+                e.ToTable("AanvoerItems");
                 e.HasKey(x => x.Id);
 
                 e.Property(x => x.FotoUrl).HasMaxLength(500);
@@ -58,7 +57,7 @@ namespace BackEnd.Data
                 e.Property(x => x.Hoeveelheid).IsRequired();
                 e.Property(x => x.MinimumPrijs).HasPrecision(10, 2);
                 e.Property(x => x.Opbrengst).HasPrecision(10, 2);
-                e.Property(x => x.GewensteKlokLocatie).HasMaxLength(100).IsRequired();
+                e.Property(x => x.GewensteKlokLocatie).HasConversion<string>().HasMaxLength(50);
                 e.Property(x => x.Veildatum).IsRequired();
             });
 

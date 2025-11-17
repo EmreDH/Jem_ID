@@ -12,11 +12,9 @@ namespace BackEnd.DTOs
         [Required]
         public string Soort { get; set; } = string.Empty;
 
-        [Required]
-        public string Potmaat { get; set; } = string.Empty;
+        public string? Potmaat { get; set; } = string.Empty;
 
-        [Required]
-        public string Steellengte { get; set; } = string.Empty;
+        public string? Steellengte { get; set; } = string.Empty;
 
         [Range(1, int.MaxValue)]
         public int Hoeveelheid { get; set; }
@@ -25,7 +23,6 @@ namespace BackEnd.DTOs
         public decimal MinimumPrijs { get; set; }
 
         [Required]
-        [StringLength(100)]
         public KlokLocatie GewensteKlokLocatie { get; set; }
 
         [Required]

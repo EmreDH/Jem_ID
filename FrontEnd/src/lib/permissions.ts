@@ -15,6 +15,7 @@ export const permissions: Permissions = {
   placeBid: ["klant"],
   viewProfile: ["admin", "klant"],
   contactSupport: ["klant", "admin"],
+  viewAanvoerderItem: ["admin"],
 };
 
 // Step 2 – Add permission helper

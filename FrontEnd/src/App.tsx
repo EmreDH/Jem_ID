@@ -40,6 +40,7 @@ function App(): JSX.Element {
           <Route path="/contact" element={<Contact />} />
           <Route path="/forbidden" element={<Forbidden />} />
           <Route path="/aankomende-producten" element={<UpcomingProducts />} />
+          <Route path="/AanvoerderItem" element={<AanvoerderItem />} />
 
           {/* Protected routes */}
           <Route
@@ -60,12 +61,17 @@ function App(): JSX.Element {
             }
           />
 
-          <Route path="/AanvoerderItem" element={<AanvoerderItem />} />
-          <Route path="*" element={<div>Not found</div>} />
+          <Route
+            path="/AanvoerderItem"
+            element={
+              <ProtectedRoute roles={["Admin"]}>
+                <AanvoerderItem />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
+        /
       </div>
-
-      <Footer />
     </div>
   );
 }
