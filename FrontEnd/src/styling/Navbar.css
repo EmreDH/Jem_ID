@@ -1,76 +1,62 @@
-/* Prevent content being pushed under navbar */
-body {
-  padding-top: 70px !important;
+.navbar {
+  width: 220px;
+  height: 100vh;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  justify-content: flex-start;
 }
 
-/* Smooth animation */
-.main-navbar {
-  transition: all 0.3s ease;
-}
-
-/* Brand */
-.navbar-brand {
+.navbar-title {
+  color: #000000;
   font-size: 1.5rem;
-  letter-spacing: 0.5px;
+  margin-bottom: 30px;
 }
 
-/* Normal nav links */
-.nav-link {
-  color: #ffffff !important;
+.navbar-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.navbar-links .navbar-item {
+  display: block;
+  width: 100%;
+  padding: 10px 15px;
+  border-radius: 8px;
   font-weight: 500;
-  transition: 0.25s ease;
-}
-
-.nav-link:hover {
-  color: #d4edda !important;
-}
-
-/* Active state */
-.nav-link.active {
-  color: #fff !important;
-  border-bottom: 2px solid #fff;
-}
-
-/* AUTH BUTTONS (Login / Sign Up / Logout) */
-.auth-btn {
-  padding: 6px 18px;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 600;
+  text-align: left;
   text-decoration: none;
-  display: inline-block;
-  cursor: pointer;
-}
-
-/* Login = white filled */
-.login-btn {
-  background: #ffffff;
-  color: #0f5132 !important;
-  border: none;
-}
-
-.login-btn:hover {
-  background: #e8e8e8;
-}
-
-/* Signup = white outline */
-.signup-btn {
+  color: #333;
   background: transparent;
-  color: #ffffff !important;
-  border: 2px solid #ffffff;
-}
-
-.signup-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
-}
-
-/* Logout button (same style as login) */
-.logout-btn {
-  background: #ffffff;
-  color: #0f5132 !important;
   border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.logout-btn:hover {
-  background: #e8e8e8;
+.navbar-links .navbar-item:hover {
+  background-color: #f0f2ff;
+}
+
+.navbar-links .navbar-item.active {
+  background-color: #e3e7ff;
+  color: #2d4ed6;
+}
+
+.navbar-links .navbar-item--logout {
+  color: #b91c1c;
+}
+
+.navbar-links .navbar-item--logout:hover {
+  background-color: #fee2e2;
+}
+
+.navbar-links .navbar-item:focus-visible {
+  outline: 2px solid #93c5fd;
+  outline-offset: 2px;
 }
