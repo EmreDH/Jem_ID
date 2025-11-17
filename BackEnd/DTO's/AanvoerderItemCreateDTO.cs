@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace BackEnd.DTOs
@@ -27,9 +26,9 @@ namespace BackEnd.DTOs
 
         [Required]
         [StringLength(100)]
-        public string GewensteKlokLocatie { get; set; } = string.Empty;
+        public KlokLocatie GewensteKlokLocatie { get; set; }
 
         [Required]
-        public DateTime Velddatum { get; set; }
+        public DateOnly Veildatum { get; set; }
     }
 }

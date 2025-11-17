@@ -23,7 +23,7 @@ public class AanvoerderItem
     public int Hoeveelheid { get; set; }
     public decimal MinimumPrijs { get; set; }
     public decimal Opbrengst { get; internal set; }
-    public KlokLocatie GewensteKloklocatie { get; set; }
+    public KlokLocatie GewensteKlokLocatie { get; set; }
     public DateOnly Veildatum { get; set; }
 
     

@@ -3,6 +3,7 @@ using BackEnd.Classes;
 using BackEnd.Data;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using BackEnd.DTOs;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -54,7 +55,7 @@ public class AanvoerderItemController : ControllerBase
                 Steellengte = dto.Steellengte,
                 Hoeveelheid = dto.Hoeveelheid,
                 MinimumPrijs = dto.MinimumPrijs,
-                GewensteKloklocatie = dto.GewensteKloklocatie,
+                GewensteKlokLocatie = dto.GewensteKlokLocatie,
                 Veildatum = dto.Veildatum
             };
 
