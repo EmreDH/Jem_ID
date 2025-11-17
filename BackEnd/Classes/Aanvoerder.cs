@@ -10,4 +10,5 @@
         // ✅ Renamed to "Items" to match ApplicationDbContext
         public ICollection<AanvoerderItem> Items { get; set; } = new List<AanvoerderItem>();
     }
+    //Backend
 }
