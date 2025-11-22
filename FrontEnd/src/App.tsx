@@ -69,6 +69,11 @@ function App(): JSX.Element {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/aankomende-producten"
+            element={<UpcomingProducts />
+            }
+          />
         </Routes>
         /
       </div>

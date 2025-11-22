@@ -16,6 +16,7 @@ export const permissions: Permissions = {
   viewProfile: ["admin", "klant"],
   contactSupport: ["klant", "admin"],
   viewAanvoerderItem: ["admin"],
+  viewAankomendeProducten: ["klant", "admin"],
 };
 
 // Step 2 – Add permission helper
