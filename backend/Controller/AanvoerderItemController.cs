@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using BackEnd.Classes;
 using BackEnd.Data;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using BackEnd.DTOs;
 
 [ApiController]
@@ -19,7 +18,6 @@ public class AanvoerderItemController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateAanvoerderItem([FromForm] AanvoerderItemCreateDTO dto, IFormFile foto)
     {
-        // ✅ 1. Extract logged-in user's ID from JWT
         var userIdClaim = User.FindFirst(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub)
                           ?? User.FindFirst(ClaimTypes.NameIdentifier);
 
@@ -28,23 +26,22 @@ public class AanvoerderItemController : ControllerBase
 
         int aanvoerderId = int.Parse(userIdClaim.Value);
 
-        // ✅ 2. Handle the uploaded file
         if (foto != null)
         {
             var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
             Directory.CreateDirectory(uploadsFolder);
 
-            var filePath = Path.Combine(uploadsFolder, foto.FileName);
+            var fileName = Path.GetFileName(foto.FileName);
+            var filePath = Path.Combine(uploadsFolder, fileName);
 
             using var stream = new FileStream(filePath, FileMode.Create);
             await foto.CopyToAsync(stream);
 
-            dto.FotoUrl = filePath; // or generate a URL if needed
+            dto.FotoUrl = $"/uploads/{fileName}";
         }
 
         try
         {
-            // ✅ 3. Map DTO to entity and assign AanvoerderId
             var entity = new AanvoerderItem
             {
                 AanvoerderId = aanvoerderId,
@@ -59,19 +56,69 @@ public class AanvoerderItemController : ControllerBase
                 Veildatum = dto.Veildatum
             };
 
-            // ✅ 4. Save to database
             _context.AanvoerItems.Add(entity);
             await _context.SaveChangesAsync();
 
-            // ✅ 5. Return success
             return Ok(new { message = "Product opgeslagen!", id = entity.Id });
         }
         catch (Exception ex)
         {
-            // ✅ 6. Return detailed error for debugging
             return StatusCode(500, new
             {
                 error = "Er is iets misgegaan bij het opslaan van het product.",
+                details = ex.Message,
+                inner = ex.InnerException?.Message
+            });
+        }
+    }
+
+    [HttpGet("upcoming-products")]
+    public IActionResult GetUpcomingProducts([FromQuery] string? location)
+    {
+        try
+        {
+            var productsQuery = _context.AanvoerItems.AsQueryable();
+
+            // Alleen filteren als er een locatie is gekozen
+            if (!string.IsNullOrWhiteSpace(location))
+            {
+                if (Enum.TryParse<KlokLocatie>(location, out var klokLocatieEnum))
+                {
+                    productsQuery = productsQuery.Where(p => p.GewensteKlokLocatie == klokLocatieEnum);
+                }
+                else
+                {
+                    return BadRequest("Ongeldige kloklocatie.");
+                }
+            }
+
+            productsQuery = productsQuery
+                .Where(p => p.Veildatum > DateOnly.FromDateTime(DateTime.Now))
+                .OrderBy(p => p.Veildatum);
+
+            var productsDTO = productsQuery
+                .Select(p => new AanvoerderItemListDTO
+                {
+                    Id = p.Id,
+                    FotoUrl = p.FotoUrl,
+                    Naam_Product = p.Naam_Product,
+                    Soort = p.Soort,
+                    Potmaat = p.Potmaat,
+                    Steellengte = p.Steellengte,
+                    Hoeveelheid = p.Hoeveelheid,
+                    MinimumPrijs = p.MinimumPrijs,
+                    GewensteKloklocatie = p.GewensteKlokLocatie.ToString(),
+                    Veildatum = p.Veildatum
+                })
+                .ToList();
+
+            return Ok(productsDTO);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new
+            {
+                error = "Er is iets misgegaan bij het ophalen van de producten.",
                 details = ex.Message,
                 inner = ex.InnerException?.Message
             });
