@@ -124,6 +124,19 @@ const Navbar: React.FC = () => {
               </li>
             )}
 
+            {hasPermission("viewAankomendeProducten") && (
+              <li className="nav-item">
+                <Link
+                  to="/aankomende-producten"
+                  className={`nav-link ${
+                    location.pathname === "/aankomende-producten" ? "active" : ""
+                  }`}
+                >
+                  Aankomende Producten
+                </Link>
+              </li>
+            )}
+
             {hasPermission("viewProfile") && (
               <li className="nav-item">
                 <Link

@@ -4,6 +4,18 @@ import "../styling/UpcomingProducts.css";
 
 type ClockLocation = "Naaldwijk" | "Aalsmeer" | "Rijnsburg" | "Eelde";
 
+type UpcomingProductDto = {
+  id: number;
+  fotoUrl?: string;
+  naam_Product: string;
+  soort: string;
+  potmaat?: string | null;
+  steellengte?: string | null;
+  hoeveelheid: number;
+  minimumPrijs: number;
+  gewensteKloklocatie: string;
+};
+
 type UpcomingProduct = {
   id: number;
   fotoUrl?: string;
@@ -16,6 +28,8 @@ type UpcomingProduct = {
   aanvoerder: string;
 };
 
+const API_BASE_URL = "https://localhost:7239";
+
 function UpcomingProducts() {
   const [products, setProducts] = useState<UpcomingProduct[]>([]);
   const [search, setSearch] = useState("");
@@ -24,17 +38,31 @@ function UpcomingProducts() {
   useEffect(() => {
     async function fetchUpcomingProducts() {
       try {
-        const products = await getJsonAuth<UpcomingProduct[]>(
-          `/api/products/upcoming-products`
+        const locationParam = location ? `?location=${location}` : "";
+        const dtoList = await getJsonAuth<UpcomingProductDto[]>(
+          `/api/AanvoerderItem/upcoming-products${locationParam}`
         );
-        setProducts(products);
+
+        const mapped: UpcomingProduct[] = dtoList.map((dto) => ({
+          id: dto.id,
+          fotoUrl: dto.fotoUrl,
+          soort: dto.soort,
+          potmaat: dto.potmaat,
+          steellengte: dto.steellengte,
+          hoeveelheid: dto.hoeveelheid,
+          minimumPrijs: dto.minimumPrijs,
+          kloklocatie: dto.gewensteKloklocatie as ClockLocation,
+          aanvoerder: dto.naam_Product,
+        }));
+
+        setProducts(mapped);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     }
 
     fetchUpcomingProducts();
-  }, []); // Alleen bij de eerste render
+  }, [location]);
 
   const filtered = products.filter(
     (p) =>
@@ -72,7 +100,7 @@ function UpcomingProducts() {
           <select
             className="up-input"
             value={location}
-            onChange={(e) => setLocation(e.target.value as any)}>
+            onChange={(e) => setLocation(e.target.value as ClockLocation | "")}>
             <option value="">Alle</option>
             <option value="Naaldwijk">Naaldwijk</option>
             <option value="Aalsmeer">Aalsmeer</option>
@@ -109,7 +137,11 @@ function UpcomingProducts() {
               <tr key={p.id}>
                 <td>
                   {p.fotoUrl ? (
-                    <img src={p.fotoUrl} alt={p.soort} className="up-thumb" />
+                    <img
+                      src={`${API_BASE_URL}${p.fotoUrl}`}
+                      alt={p.soort}
+                      className="up-thumb"
+                    />
                   ) : (
                     <div className="up-thumb up-thumb-empty" />
                   )}

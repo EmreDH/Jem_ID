@@ -1,6 +1,5 @@
 using BackEnd.Classes;
 using BackEnd.Data;
- // ✅ Nodig om toegang te hebben tot Aanvoerder en AanvoerderItem modellen
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -9,9 +8,11 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Json.Serialization;
 
+using Microsoft.Extensions.FileProviders;
+using System.IO;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// ✅ Controllers met enum-conversie (voor b.v. KlokLocatie)
 builder.Services
     .AddControllers()
     .AddJsonOptions(o =>
@@ -19,7 +20,7 @@ builder.Services
         o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
 
-// ✅ JWT authenticatie (blijft exact zoals je had)
+// JWT authenticatie
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(opt =>
     {
@@ -39,10 +40,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-// ✅ Authorization policies (nog nodig voor [Authorize])
+// Policies voor (Authorize)
 builder.Services.AddAuthorization();
 
-// ✅ Swagger configuratie met JWT ondersteuning
+// Swagger configuratie met JWT ondersteuning
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -61,19 +62,12 @@ builder.Services.AddSwaggerGen(c =>
     c.AddSecurityRequirement(new OpenApiSecurityRequirement { { jwt, Array.Empty<string>() } });
 });
 
-// ✅ JWT Service behouden
 builder.Services.AddSingleton<JwtService>();
 
-// ✅ SQL Server configuratie behouden (ApplicationDbContext toevoegen)
 builder.Services.AddDbContext<ApplicationDbContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// ✅ Voeg hier niets weg — enkel toevoegen wat al bestaat in je DbContext:
-// In ApplicationDbContext.cs moet staan:
-// public DbSet<Aanvoerder> Aanvoerders { get; set; }
-// public DbSet<AanvoerderItem> AanvoerderItems { get; set; }
-
-// ✅ CORS instellingen behouden
+// CORS instellingen voor frontend verbindingen
 builder.Services.AddCors(o =>
 {
     o.AddPolicy("frontend", p =>
@@ -89,20 +83,33 @@ builder.Services.AddCors(o =>
 
 var app = builder.Build();
 
-// ✅ Swagger blijft alleen actief in Development
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-// ✅ Middleware volgorde is belangrijk
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();
+
+// Pad naar de uploads map in backend project
+var uploadsPath = Path.Combine(builder.Environment.ContentRootPath, "uploads");
+
+Directory.CreateDirectory(uploadsPath);
+
+// Alles in uploads wordt nu geserveerd onder de url uploads
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(uploadsPath),
+    RequestPath = "/uploads"
+});
+
 app.UseCors("frontend");
 app.UseAuthentication();
 app.UseAuthorization();
 
-// ✅ Controllers worden automatisch gemapt (zoals AanvoerderItemController)
+// Controllers worden automatisch gemapt
 app.MapControllers();
 
 app.Run();
