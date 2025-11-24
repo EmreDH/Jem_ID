@@ -14,6 +14,8 @@ type UpcomingProductDto = {
   hoeveelheid: number;
   minimumPrijs: number;
   gewensteKloklocatie: string;
+  AanvoerderId: number;
+  AanvoerderName: string;
 };
 
 type UpcomingProduct = {
@@ -25,7 +27,8 @@ type UpcomingProduct = {
   hoeveelheid: number;
   minimumPrijs: number;
   kloklocatie: ClockLocation;
-  aanvoerder: string;
+  AanvoerderId: number;
+  aanvoerderName: string;
 };
 
 const API_BASE_URL = "https://localhost:7239";
@@ -52,7 +55,8 @@ function UpcomingProducts() {
           hoeveelheid: dto.hoeveelheid,
           minimumPrijs: dto.minimumPrijs,
           kloklocatie: dto.gewensteKloklocatie as ClockLocation,
-          aanvoerder: dto.naam_Product,
+          AanvoerderId: dto.AanvoerderId || 0,
+          aanvoerderName: dto.AanvoerderName || "😒",
         }));
 
         setProducts(mapped);
@@ -69,7 +73,7 @@ function UpcomingProducts() {
       (!location || p.kloklocatie === location) &&
       (search.trim().length === 0 ||
         p.soort.toLowerCase().includes(search.toLowerCase()) ||
-        p.aanvoerder.toLowerCase().includes(search.toLowerCase()))
+        p.AanvoerderId)
   );
 
   function handlePlan(id: number) {
@@ -100,7 +104,8 @@ function UpcomingProducts() {
           <select
             className="up-input"
             value={location}
-            onChange={(e) => setLocation(e.target.value as ClockLocation | "")}>
+            onChange={(e) => setLocation(e.target.value as ClockLocation | "")}
+          >
             <option value="">Alle</option>
             <option value="Naaldwijk">Naaldwijk</option>
             <option value="Aalsmeer">Aalsmeer</option>
@@ -151,12 +156,13 @@ function UpcomingProducts() {
                 <td>{p.hoeveelheid}</td>
                 <td>€ {p.minimumPrijs.toFixed(2)}</td>
                 <td>{p.kloklocatie}</td>
-                <td>{p.aanvoerder}</td>
+                <td>{p.aanvoerderName}</td>
                 <td>
                   <div className="up-actions">
                     <button
                       className="up-btn up-btn-secondary"
-                      onClick={() => handlePlan(p.id)}>
+                      onClick={() => handlePlan(p.id)}
+                    >
                       Plan
                     </button>
                   </div>

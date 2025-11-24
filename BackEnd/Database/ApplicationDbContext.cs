@@ -40,7 +40,15 @@ namespace BackEnd.Data
 
                 e.HasMany(a => a.Items)
                     .WithOne(i => i.Aanvoerder)
+                    .HasForeignKey(i => i.AanvoerderId)
                     .OnDelete(DeleteBehavior.Cascade);
+
+                e.HasOne(a => a.User)
+                    .WithMany() // User can have multiple Aanvoerders if needed
+                    .HasForeignKey(a => a.UserId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+
             });
 
             // AANVOERDER ITEM
