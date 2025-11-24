@@ -4,8 +4,8 @@ De opdracht is om een gebruiksvriendelijke (mogelijk realtime) digitale veilingk
 
 Het systeem is opgesplitst in twee project, namelijk:
 
-- **Back end**: Verantwoordelijk voor
-- **Front end**: Verantwoordelijk voor
+- **Back end**: Verantwoordelijk voor de API's, databasekoppelingen, authenticatie, autorisatie en de volledige logica achter het veilen, plannen en beheren van producten.
+- **Front end**: Verantwoordelijk voor de gebruikersinterface, real-time klokweergave, productoverzichten, formulieren en alle interactie tussen gebruiker en de backend.
 
 ## Systeemvereisten
 
