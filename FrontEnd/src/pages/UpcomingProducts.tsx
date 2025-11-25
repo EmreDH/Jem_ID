@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getJsonAuth } from "../lib/Http";
 import "../styling/UpcomingProducts.css";
+import { useNavigate } from "react-router-dom";
 
 type ClockLocation = "Naaldwijk" | "Aalsmeer" | "Rijnsburg" | "Eelde";
 
@@ -37,6 +38,7 @@ function UpcomingProducts() {
   const [products, setProducts] = useState<UpcomingProduct[]>([]);
   const [search, setSearch] = useState("");
   const [location, setLocation] = useState<"" | ClockLocation>("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchUpcomingProducts() {
@@ -75,11 +77,6 @@ function UpcomingProducts() {
         p.soort.toLowerCase().includes(search.toLowerCase()) ||
         p.AanvoerderId)
   );
-
-  function handlePlan(id: number) {
-    console.log("Plan veiling (alleen UI) voor id:", id);
-    alert("Plan-veiling actie wordt later gekoppeld aan de backend.");
-  }
 
   return (
     <div className="up-container">
@@ -161,7 +158,7 @@ function UpcomingProducts() {
                   <div className="up-actions">
                     <button
                       className="up-btn up-btn-secondary"
-                      onClick={() => handlePlan(p.id)}
+                      onClick={() => navigate(`/Veilingmaster/${p.id}`)}
                     >
                       Plan
                     </button>
