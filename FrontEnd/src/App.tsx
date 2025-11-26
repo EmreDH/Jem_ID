@@ -71,13 +71,16 @@ function App(): JSX.Element {
                 <AanvoerderItem />
               </ProtectedRoute>
             }
-          />
-          <Route path="/aankomende-producten" element={<UpcomingProducts />} />
-        </Routes>
-        /
-      </div>
-    </div>
-  );
+   <Route
+  path="/aankomende-producten"
+  element={<UpcomingProducts />}
+/>
+
+{/* 👇 Footer ALWAYS at bottom */}
+<Footer />
+</div>
+);
 }
 
 export default App;
+
