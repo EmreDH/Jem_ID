@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getJsonAuth } from "../lib/Http";
 import "../styling/UpcomingProducts.css";
+import { useNavigate } from "react-router-dom";
 
 type ClockLocation = "Naaldwijk" | "Aalsmeer" | "Rijnsburg" | "Eelde";
 
@@ -14,6 +15,8 @@ type UpcomingProductDto = {
   hoeveelheid: number;
   minimumPrijs: number;
   gewensteKloklocatie: string;
+  AanvoerderId: number;
+  AanvoerderName: string;
 };
 
 type UpcomingProduct = {
@@ -25,7 +28,8 @@ type UpcomingProduct = {
   hoeveelheid: number;
   minimumPrijs: number;
   kloklocatie: ClockLocation;
-  aanvoerder: string;
+  AanvoerderId: number;
+  aanvoerderName: string;
 };
 
 const API_BASE_URL = "https://localhost:7239";
@@ -34,6 +38,7 @@ function UpcomingProducts() {
   const [products, setProducts] = useState<UpcomingProduct[]>([]);
   const [search, setSearch] = useState("");
   const [location, setLocation] = useState<"" | ClockLocation>("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchUpcomingProducts() {
@@ -52,7 +57,8 @@ function UpcomingProducts() {
           hoeveelheid: dto.hoeveelheid,
           minimumPrijs: dto.minimumPrijs,
           kloklocatie: dto.gewensteKloklocatie as ClockLocation,
-          aanvoerder: dto.naam_Product,
+          AanvoerderId: dto.AanvoerderId || 0,
+          aanvoerderName: dto.AanvoerderName || "😒",
         }));
 
         setProducts(mapped);
@@ -69,13 +75,8 @@ function UpcomingProducts() {
       (!location || p.kloklocatie === location) &&
       (search.trim().length === 0 ||
         p.soort.toLowerCase().includes(search.toLowerCase()) ||
-        p.aanvoerder.toLowerCase().includes(search.toLowerCase()))
+        p.AanvoerderId)
   );
-
-  function handlePlan(id: number) {
-    console.log("Plan veiling (alleen UI) voor id:", id);
-    alert("Plan-veiling actie wordt later gekoppeld aan de backend.");
-  }
 
   return (
     <div className="up-container">
@@ -100,7 +101,8 @@ function UpcomingProducts() {
           <select
             className="up-input"
             value={location}
-            onChange={(e) => setLocation(e.target.value as ClockLocation | "")}>
+            onChange={(e) => setLocation(e.target.value as ClockLocation | "")}
+          >
             <option value="">Alle</option>
             <option value="Naaldwijk">Naaldwijk</option>
             <option value="Aalsmeer">Aalsmeer</option>
@@ -151,12 +153,13 @@ function UpcomingProducts() {
                 <td>{p.hoeveelheid}</td>
                 <td>€ {p.minimumPrijs.toFixed(2)}</td>
                 <td>{p.kloklocatie}</td>
-                <td>{p.aanvoerder}</td>
+                <td>{p.aanvoerderName}</td>
                 <td>
                   <div className="up-actions">
                     <button
                       className="up-btn up-btn-secondary"
-                      onClick={() => handlePlan(p.id)}>
+                      onClick={() => navigate(`/Veilingmaster/${p.id}`)}
+                    >
                       Plan
                     </button>
                   </div>

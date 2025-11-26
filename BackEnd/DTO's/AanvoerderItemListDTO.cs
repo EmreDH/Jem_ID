@@ -12,4 +12,6 @@ public class AanvoerderItemListDTO
     public decimal MinimumPrijs { get; set; }
     public string GewensteKloklocatie { get; set; } = string.Empty;
     public DateOnly Veildatum { get; set; }
+    public int AanvoerderId { get; set; }
+    public string AanvoerderName { get; set; } = string.Empty;
 }
