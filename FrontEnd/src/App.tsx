@@ -15,6 +15,7 @@ import ActueleProduct from "./pages/ActueleProduct";
 import Veilingen from "./pages/Veilingen";
 import Footer from "./components/Footer";
 import AuctionDetailPage from "./pages/AuctionDetail";
+import Veilingmaster from "./pages/Veilingmaster";
 
 function App(): JSX.Element {
   return (
@@ -42,6 +43,8 @@ function App(): JSX.Element {
           <Route path="/forbidden" element={<Forbidden />} />
           <Route path="/aankomende-producten" element={<UpcomingProducts />} />
           <Route path="/AanvoerderItem" element={<AanvoerderItem />} />
+          <Route path="/Veilingmaster/:id" element={<Veilingmaster />} />
+          <Route path="/Veilingmaster/" element={<Veilingmaster />} />
 
           {/* Protected routes */}
           <Route
@@ -85,6 +88,7 @@ function App(): JSX.Element {
             }
           />
 
+          <Route path="/aankomende-producten" element={<UpcomingProducts />} />
         </Routes>
         /
       </div>

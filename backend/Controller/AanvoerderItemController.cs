@@ -73,6 +73,39 @@ public class AanvoerderItemController : ControllerBase
         }
     }
 
+   [HttpGet("{id}")]
+        public async Task<IActionResult> GetProductById(int id)
+        {
+            var p = await _context.AanvoerItems
+                .Include(x => x.Aanvoerder)
+                .ThenInclude(a => a.User)
+                .Where(x => x.Id == id)
+                .Select(x => new AanvoerderItemListDTO
+                {
+                    Id = x.Id,
+                    Naam_Product = x.Naam_Product,
+                    FotoUrl = x.FotoUrl,
+                    Soort = x.Soort,
+                    Potmaat = x.Potmaat,
+                    Steellengte = x.Steellengte,
+                    Hoeveelheid = x.Hoeveelheid,
+                    MinimumPrijs = x.MinimumPrijs,
+                    GewensteKloklocatie = x.GewensteKlokLocatie.ToString(),
+                    Veildatum = x.Veildatum,
+                    AanvoerderId = x.AanvoerderId,
+                    AanvoerderName = x.Aanvoerder.User.Name
+                })
+                .FirstOrDefaultAsync();
+
+            if (p == null)
+                return NotFound();
+
+            return Ok(p);
+        }
+
+
+
+
     [HttpGet("upcoming-products")]
     public IActionResult GetUpcomingProducts([FromQuery] string? location)
     {
