@@ -64,13 +64,13 @@ const Dashboard: React.FC = () => {
               </tr>
               <tr>
                 <td>Appelenmand</td>
-                <td>€89</td>
+                <td>€87</td>
                 <td><span className="badge bg-warning text-dark">Lopend</span></td>
                 <td>14 Nov 2025</td>
               </tr>
               <tr>
                 <td>Paprika doos</td>
-                <td>€102</td>
+                <td>€103</td>
                 <td><span className="badge bg-danger">Verloren</span></td>
                 <td>12 Nov 2025</td>
               </tr>
