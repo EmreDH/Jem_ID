@@ -74,11 +74,16 @@ function App(): JSX.Element {
             element={<UpcomingProducts />
             }
           />
-        </Routes>
-        /
+                </Routes>
       </div>
+
+      {/* 👇 Footer ALWAYS at bottom */}
+      <Footer />
     </div>
   );
 }
 
 export default App;
+
+
+
