@@ -14,6 +14,7 @@ import Profiel from "./pages/Profiel";
 import ActueleProduct from "./pages/ActueleProduct";
 import Veilingen from "./pages/Veilingen";
 import Footer from "./components/Footer";
+import AuctionDetailPage from "./pages/AuctionDetail";
 
 function App(): JSX.Element {
   return (
@@ -74,6 +75,16 @@ function App(): JSX.Element {
             element={<UpcomingProducts />
             }
           />
+
+           <Route
+            path="/veilingen/:auctionId"
+            element={
+              <ProtectedRoute roles={["klant", "Admin"]}>
+                <AuctionDetailPage />
+              </ProtectedRoute>
+            }
+          />
+
         </Routes>
         /
       </div>
