@@ -16,6 +16,7 @@ import Veilingen from "./pages/Veilingen";
 import Footer from "./components/Footer";
 import AuctionDetailPage from "./pages/AuctionDetail";
 import Veilingmaster from "./pages/Veilingmaster";
+import LiveAuction from "./pages/LiveAuction";
 
 function App(): JSX.Element {
   return (
@@ -46,6 +47,12 @@ function App(): JSX.Element {
           <Route path="/Veilingmaster/:id" element={<Veilingmaster />} />
           <Route path="/Veilingmaster/" element={<Veilingmaster />} />
 
+          <Route>
+            {/* ...andere routes... */}
+
+            <Route path="/veiling/live/:id" element={<LiveAuction />} />
+          </Route>
+
           {/* Protected routes */}
           <Route
             path="/veilingen"
@@ -73,13 +80,9 @@ function App(): JSX.Element {
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/aankomende-producten"
-            element={<UpcomingProducts />
-            }
-          />
+          <Route path="/aankomende-producten" element={<UpcomingProducts />} />
 
-           <Route
+          <Route
             path="/veilingen/:auctionId"
             element={
               <ProtectedRoute roles={["klant", "Admin"]}>
