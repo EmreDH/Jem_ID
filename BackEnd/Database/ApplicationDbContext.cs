@@ -12,7 +12,8 @@ namespace BackEnd.Data
         public DbSet<User> Users => Set<User>();
         public DbSet<Aanvoerder> Aanvoerders => Set<Aanvoerder>();
         public DbSet<AanvoerderItem> AanvoerItems => Set<AanvoerderItem>();
-        public DbSet<AuctionItem> AuctionItems => Set<AuctionItem>();
+        public DbSet<AuctionItem> AuctionItems { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder b)
         {

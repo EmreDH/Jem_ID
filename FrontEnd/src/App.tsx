@@ -16,17 +16,20 @@ import ActueleProduct from "./pages/ActueleProduct";
 import Veilingen from "./pages/Veilingen";
 import AuctionDetailPage from "./pages/AuctionDetail";
 import Veilingmaster from "./pages/Veilingmaster";
+import LiveAuction from "./pages/LiveAuction";
 
 function App(): JSX.Element {
   return (
     <Layout>
       <Routes>
+        {/* Public routes */}
         <Route path="/" element={<HomePage />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/forbidden" element={<Forbidden />} />
 
+        {/* Protected routes */}
         <Route
           path="/dashboard"
           element={
@@ -61,6 +64,11 @@ function App(): JSX.Element {
               <Veilingen />
             </ProtectedRoute>
           }
+        />
+
+        <Route
+          path="/veiling/live/:id"
+          element={<LiveAuction />}
         />
 
         <Route
