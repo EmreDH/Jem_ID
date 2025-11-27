@@ -22,12 +22,14 @@ function App(): JSX.Element {
   return (
     <Layout>
       <Routes>
+        {/* Public routes */}
         <Route path="/" element={<HomePage />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/forbidden" element={<Forbidden />} />
 
+        {/* Protected routes */}
         <Route
           path="/dashboard"
           element={
@@ -37,21 +39,14 @@ function App(): JSX.Element {
           }
         />
 
-          <Route>
-            {/* ...andere routes... */}
-
-            <Route path="/veiling/live/:id" element={<LiveAuction />} />
-          </Route>
-
-          {/* Protected routes */}
-          <Route
-            path="/veilingen"
-            element={
-              <ProtectedRoute roles={["klant", "Admin"]}>
-                <Veilingen />
-              </ProtectedRoute>
-            }
-          />
+        <Route
+          path="/profiel"
+          element={
+            <ProtectedRoute roles={["klant", "Admin"]}>
+              <Profiel />
+            </ProtectedRoute>
+          }
+        />
 
         <Route
           path="/actuele-product"
@@ -62,24 +57,28 @@ function App(): JSX.Element {
           }
         />
 
-          <Route
-            path="/AanvoerderItem"
-            element={
-              <ProtectedRoute roles={["Admin"]}>
-                <AanvoerderItem />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/aankomende-producten" element={<UpcomingProducts />} />
+        <Route
+          path="/veilingen"
+          element={
+            <ProtectedRoute roles={["klant", "Admin"]}>
+              <Veilingen />
+            </ProtectedRoute>
+          }
+        />
 
-          <Route
-            path="/veilingen/:auctionId"
-            element={
-              <ProtectedRoute roles={["klant", "Admin"]}>
-                <AuctionDetailPage />
-              </ProtectedRoute>
-            }
-          />
+        <Route
+          path="/veiling/live/:id"
+          element={<LiveAuction />}
+        />
+
+        <Route
+          path="/veilingen/:auctionId"
+          element={
+            <ProtectedRoute roles={["klant", "Admin"]}>
+              <AuctionDetailPage />
+            </ProtectedRoute>
+          }
+        />
 
         <Route path="/aankomende-producten" element={<UpcomingProducts />} />
 
