@@ -80,6 +80,21 @@ function App(): JSX.Element {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/aankomende-producten"
+            element={<UpcomingProducts />
+            }
+          />
+
+           <Route
+            path="/veilingen/:auctionId"
+            element={
+              <ProtectedRoute roles={["klant", "Admin"]}>
+                <AuctionDetailPage />
+              </ProtectedRoute>
+            }
+          />
+
           <Route path="/aankomende-producten" element={<UpcomingProducts />} />
 
           <Route
