@@ -16,6 +16,7 @@ import ActueleProduct from "./pages/ActueleProduct";
 import Veilingen from "./pages/Veilingen";
 import AuctionDetailPage from "./pages/AuctionDetail";
 import Veilingmaster from "./pages/Veilingmaster";
+import LiveAuction from "./pages/LiveAuction";
 
 function App(): JSX.Element {
   return (
@@ -36,14 +37,21 @@ function App(): JSX.Element {
           }
         />
 
-        <Route
-          path="/profiel"
-          element={
-            <ProtectedRoute roles={["klant", "Admin"]}>
-              <Profiel />
-            </ProtectedRoute>
-          }
-        />
+          <Route>
+            {/* ...andere routes... */}
+
+            <Route path="/veiling/live/:id" element={<LiveAuction />} />
+          </Route>
+
+          {/* Protected routes */}
+          <Route
+            path="/veilingen"
+            element={
+              <ProtectedRoute roles={["klant", "Admin"]}>
+                <Veilingen />
+              </ProtectedRoute>
+            }
+          />
 
         <Route
           path="/actuele-product"
@@ -54,23 +62,24 @@ function App(): JSX.Element {
           }
         />
 
-        <Route
-          path="/veilingen"
-          element={
-            <ProtectedRoute roles={["klant", "Admin"]}>
-              <Veilingen />
-            </ProtectedRoute>
-          }
-        />
+          <Route
+            path="/AanvoerderItem"
+            element={
+              <ProtectedRoute roles={["Admin"]}>
+                <AanvoerderItem />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/aankomende-producten" element={<UpcomingProducts />} />
 
-        <Route
-          path="/veilingen/:auctionId"
-          element={
-            <ProtectedRoute roles={["klant", "Admin"]}>
-              <AuctionDetailPage />
-            </ProtectedRoute>
-          }
-        />
+          <Route
+            path="/veilingen/:auctionId"
+            element={
+              <ProtectedRoute roles={["klant", "Admin"]}>
+                <AuctionDetailPage />
+              </ProtectedRoute>
+            }
+          />
 
         <Route path="/aankomende-producten" element={<UpcomingProducts />} />
 
