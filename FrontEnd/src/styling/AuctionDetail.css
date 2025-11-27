@@ -1,0 +1,176 @@
+.page-container.veiling-detail {
+  max-width: 1100px;
+  margin: 2.5rem auto 3.5rem auto;
+  padding: 0 1.5rem;
+}
+
+.veiling-detail-card {
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+}
+
+.veiling-detail-card-header {
+  background-color: #0b7a3f;
+  padding: 1.1rem 1.5rem;
+  text-align: center;
+  color: #ffffff;
+}
+
+.veiling-detail-card-header h2 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.veiling-detail-card-header p {
+  margin: 0.2rem 0 0;
+  font-size: 0.9rem;
+  opacity: 0.95;
+}
+
+.veiling-detail-card-body {
+  padding: 2rem 2.2rem 2.5rem 2.2rem;
+  text-align: center;
+}
+
+.vd-product-image {
+  background: #f5f5f5;
+  border-radius: 12px;
+  padding: 1.5rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  max-width: 380px;
+  margin: 1rem auto 0.5rem auto;
+
+  height: 280px;
+  overflow: hidden;
+}
+
+.vd-product-image img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.vd-content-wrapper {
+  max-width: 700px;
+  margin: 0 auto 2rem auto;
+  text-align: left;
+}
+
+.vd-title {
+  margin: 0.75rem 0 0.2rem;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.vd-subtitle {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #4b5563;
+}
+
+.vd-info-box {
+  background: #f9fafb;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  padding: 1rem 1.3rem;
+  margin-top: 0.9rem;
+  text-align: left;
+}
+
+.vd-info-box p {
+  margin: 0.35rem 0;
+  font-size: 0.92rem;
+  color: #374151;
+}
+
+.vd-info-box strong {
+  font-weight: 600;
+  color: #111827;
+}
+
+.vd-price-row {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 1.75rem;
+  padding-bottom: 1.75rem;
+  text-align: center;
+}
+
+.vd-price-label {
+  display: block;
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-top: -0.6rem;
+}
+
+.vd-price-value {
+  display: block;
+  margin: 0.5rem auto 1rem;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.clock-extra {
+  font-size: 0.85rem;
+  margin: 0.2rem 0;
+  color: #6b7280;
+}
+
+.vd-primary-btn {
+  padding: 0.85rem 1.8rem;
+  border-radius: 999px;
+  border: none;
+  background-color: #0b7a3f;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.vd-primary-btn:hover {
+  background-color: #086435;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.15);
+}
+
+.vd-primary-btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.vd-status-closed {
+  margin-top: 1rem;
+  background: #fee2e2;
+  padding: 0.55rem 1.25rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #b91c1c;
+  display: inline-block;
+}
+
+@media (max-width: 768px) {
+  .veiling-detail-card-body {
+    padding: 1.5rem;
+  }
+
+  .vd-product-image {
+    max-width: 100%;
+    height: 230px;
+  }
+
+  .vd-price-value {
+    font-size: 1.5rem;
+  }
+}

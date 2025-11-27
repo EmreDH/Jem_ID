@@ -4,7 +4,7 @@ namespace BackEnd.Classes
     {
         public int Id { get; set; }
 
-        public int AanvoerderItemId { get; set; }
+        public int AanvoerItemId { get; set; }
         public AanvoerderItem AanvoerderItem { get; set; } = null!;
 
         public DateTime StartTimeUtc { get; set; }

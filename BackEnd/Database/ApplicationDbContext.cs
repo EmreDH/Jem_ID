@@ -77,13 +77,13 @@ namespace BackEnd.Data
 
                 e.HasOne(a => a.AanvoerderItem)
                     .WithOne()
-                    .HasForeignKey<AuctionItem>(x => x.AanvoerderItemId)
+                    .HasForeignKey<AuctionItem>(x => x.AanvoerItemId)
                     .OnDelete(DeleteBehavior.Cascade);
 
                 e.Property(x => x.CurrentPrice).HasPrecision(10, 2);
                 e.Property(x => x.FinalPrice).HasPrecision(10, 2);
 
-                e.HasIndex(x => x.AanvoerderItemId).IsUnique();
+                e.HasIndex(x => x.AanvoerItemId).IsUnique();
                 e.HasIndex(x => x.EndTimeUtc);
             });
         }

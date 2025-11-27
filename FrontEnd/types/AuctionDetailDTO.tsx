@@ -1,0 +1,21 @@
+export type AuctionDetail = {
+  id: number;
+  aanvoerderItemId: number;
+  naam_Product: string;
+  fotoUrl: string;
+  soort: string;
+  potmaat?: string | null;
+  steellengte?: string | null;
+  hoeveelheid: number;
+  kloklocatie: string;
+  aanvoerderName: string;
+  korteBeschrijving: string;
+  startPrijs: number;
+  minimalePrijs: number;
+  stapBedrag: number;
+  stapSeconden: number;
+  startTijdUtc: string;
+  isGesloten: boolean;
+  winnaarNaam?: string | null;
+  winnendePrijs?: number | null;
+};

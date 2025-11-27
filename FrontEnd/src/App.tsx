@@ -14,6 +14,7 @@ import Profiel from "./pages/Profiel";
 import ActueleProduct from "./pages/ActueleProduct";
 import Veilingen from "./pages/Veilingen";
 import Footer from "./components/Footer";
+import AuctionDetailPage from "./pages/AuctionDetail";
 import Veilingmaster from "./pages/Veilingmaster";
 
 function App(): JSX.Element {
@@ -72,6 +73,21 @@ function App(): JSX.Element {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/aankomende-producten"
+            element={<UpcomingProducts />
+            }
+          />
+
+           <Route
+            path="/veilingen/:auctionId"
+            element={
+              <ProtectedRoute roles={["klant", "Admin"]}>
+                <AuctionDetailPage />
+              </ProtectedRoute>
+            }
+          />
+
           <Route path="/aankomende-producten" element={<UpcomingProducts />} />
         </Routes>
         /
