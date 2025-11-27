@@ -96,20 +96,6 @@ const Navbar: React.FC = () => {
                   Dashboard
                 </Link>
               </li>
-            )} 
-
-            {/* ✅ NEW BUTTON — ADMIN ONLY */}
-            {role === "admin" && (
-              <li className="nav-item">
-                <Link
-                  to="/AanvoerderItem"
-                  className={`nav-link ${
-                    location.pathname === "/AanvoerderItem" ? "active" : ""
-                  }`}
-                >
-                  Aanvoerderitem
-                </Link>
-              </li>
             )}
 
             {hasPermission("manageProducts") && (
@@ -143,7 +129,9 @@ const Navbar: React.FC = () => {
                 <Link
                   to="/aankomende-producten"
                   className={`nav-link ${
-                    location.pathname === "/aankomende-producten" ? "active" : ""
+                    location.pathname === "/aankomende-producten"
+                      ? "active"
+                      : ""
                   }`}
                 >
                   Aankomende Producten
