@@ -147,7 +147,7 @@ const Veilingmaster = () => {
             className="btn btn-success btn-lg px-5"
             onClick={handleStartAuction}
           >
-            Start
+            veiling
           </button>
         </div>
       </div>
