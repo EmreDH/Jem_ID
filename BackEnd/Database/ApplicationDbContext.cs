@@ -57,7 +57,15 @@ namespace BackEnd.Data
 
                 e.HasMany(a => a.Items)
                     .WithOne(i => i.Aanvoerder)
+                    .HasForeignKey(i => i.AanvoerderId)
                     .OnDelete(DeleteBehavior.Cascade);
+
+                e.HasOne(a => a.User)
+                    .WithMany() // User can have multiple Aanvoerders if needed
+                    .HasForeignKey(a => a.UserId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+
             });
 
             // AANVOERDER ITEM
@@ -88,13 +96,13 @@ namespace BackEnd.Data
 
                 e.HasOne(a => a.AanvoerderItem)
                     .WithOne()
-                    .HasForeignKey<AuctionItem>(x => x.AanvoerderItemId)
+                    .HasForeignKey<AuctionItem>(x => x.AanvoerItemId)
                     .OnDelete(DeleteBehavior.Cascade);
 
                 e.Property(x => x.CurrentPrice).HasPrecision(10, 2);
                 e.Property(x => x.FinalPrice).HasPrecision(10, 2);
 
-                e.HasIndex(x => x.AanvoerderItemId).IsUnique();
+                e.HasIndex(x => x.AanvoerItemId).IsUnique();
                 e.HasIndex(x => x.EndTimeUtc);
             });
         }

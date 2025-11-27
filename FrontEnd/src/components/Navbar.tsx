@@ -144,7 +144,9 @@ const Navbar: React.FC = () => {
                 <Link
                   to="/aankomende-producten"
                   className={`nav-link ${
-                    location.pathname === "/aankomende-producten" ? "active" : ""
+                    location.pathname === "/aankomende-producten"
+                      ? "active"
+                      : ""
                   }`}
                 >
                   Aankomende Producten

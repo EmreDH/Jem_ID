@@ -11,3 +11,21 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* 👇 These 3 blocks are the important ones */
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;   /* use vh here to be extra safe */
+}
+
+main {
+  flex: 1;
+}

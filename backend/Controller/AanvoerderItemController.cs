@@ -3,6 +3,7 @@ using BackEnd.Classes;
 using BackEnd.Data;
 using System.Security.Claims;
 using BackEnd.DTOs;
+using Microsoft.EntityFrameworkCore;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -72,12 +73,49 @@ public class AanvoerderItemController : ControllerBase
         }
     }
 
+   [HttpGet("{id}")]
+        public async Task<IActionResult> GetProductById(int id)
+        {
+            var p = await _context.AanvoerItems
+                .Include(x => x.Aanvoerder)
+                .ThenInclude(a => a.User)
+                .Where(x => x.Id == id)
+                .Select(x => new AanvoerderItemListDTO
+                {
+                    Id = x.Id,
+                    Naam_Product = x.Naam_Product,
+                    FotoUrl = x.FotoUrl,
+                    Soort = x.Soort,
+                    Potmaat = x.Potmaat,
+                    Steellengte = x.Steellengte,
+                    Hoeveelheid = x.Hoeveelheid,
+                    MinimumPrijs = x.MinimumPrijs,
+                    GewensteKloklocatie = x.GewensteKlokLocatie.ToString(),
+                    Veildatum = x.Veildatum,
+                    AanvoerderId = x.AanvoerderId,
+                    AanvoerderName = x.Aanvoerder.User.Name
+                })
+                .FirstOrDefaultAsync();
+
+            if (p == null)
+                return NotFound();
+
+            return Ok(p);
+        }
+
+
+
+
     [HttpGet("upcoming-products")]
     public IActionResult GetUpcomingProducts([FromQuery] string? location)
     {
         try
         {
-            var productsQuery = _context.AanvoerItems.AsQueryable();
+            var productsQuery = _context.AanvoerItems
+                .Include(p => p.Aanvoerder)
+                .ThenInclude(a => a.User)
+                .AsQueryable();
+
 
             // Alleen filteren als er een locatie is gekozen
             if (!string.IsNullOrWhiteSpace(location))
@@ -96,6 +134,8 @@ public class AanvoerderItemController : ControllerBase
                 .Where(p => p.Veildatum > DateOnly.FromDateTime(DateTime.Now))
                 .OrderBy(p => p.Veildatum);
 
+            foreach (var p in productsQuery) { Console.WriteLine($"ItemId: {p.Id}, AanvoerderId: {p.AanvoerderId}, User: {p.Aanvoerder?.User?.Name}"); }
+
             var productsDTO = productsQuery
                 .Select(p => new AanvoerderItemListDTO
                 {
@@ -108,7 +148,9 @@ public class AanvoerderItemController : ControllerBase
                     Hoeveelheid = p.Hoeveelheid,
                     MinimumPrijs = p.MinimumPrijs,
                     GewensteKloklocatie = p.GewensteKlokLocatie.ToString(),
-                    Veildatum = p.Veildatum
+                    Veildatum = p.Veildatum,
+                    AanvoerderId = p.AanvoerderId,
+                    AanvoerderName = p.Aanvoerder.User.Name
                 })
                 .ToList();
 
