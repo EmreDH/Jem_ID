@@ -19,7 +19,7 @@ function AuctionDetailPage() {
       try {
         setLoading(true);
         const result = await getJsonAuth<AuctionDetail>(
-          `/api/Auction/${auctionId}`
+          `/api/Auction/detail/${auctionId}`
         );
         setData(result);
         setError(null);

@@ -7,7 +7,7 @@ public class AuctionItem
 
     public decimal StartPrice { get; set; }
     public decimal CurrentPrice { get; set; }
-    public decimal FinalPrice { get; set; }
+    public decimal? FinalPrice { get; set; }
 
     public DateTime StartTimeUtc { get; set; }
     public DateTime EndTimeUtc { get; set; }

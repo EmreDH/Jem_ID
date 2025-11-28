@@ -20,15 +20,15 @@ const Veilingmaster = () => {
   }, [id]);
 
   // START VEILING
-  const handleStartAuction = () => {
+  const handleStartAuction = async () => {
     if (!product) return;
 
-    apiClient
-      .post(`/Auction/start/${product.id}`)
-      .then(() => {
-        navigate(`/veiling/live/${product.id}`);
-      })
-      .catch((err) => console.error("Auction start error:", err));
+    try {
+      await apiClient.post(`/Auction/start/${product.id}`);
+      navigate("/veilingen"); // 👉 naar overzicht, NIET naar detail
+    } catch (err) {
+      console.error("Auction start error:", err);
+    }
   };
 
   if (loading) return <p className="text-center mt-5">Loading...</p>;
@@ -145,9 +145,8 @@ const Veilingmaster = () => {
         <div className="text-center mt-4">
           <button
             className="btn btn-success btn-lg px-5"
-            onClick={handleStartAuction}
-          >
-            veiling
+            onClick={handleStartAuction}>
+            Start veiling
           </button>
         </div>
       </div>
