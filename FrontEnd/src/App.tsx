@@ -66,10 +66,7 @@ function App(): JSX.Element {
           }
         />
 
-        <Route
-          path="/veiling/live/:id"
-          element={<LiveAuction />}
-        />
+        <Route path="/veiling/live/:id" element={<LiveAuction />} />
 
         <Route
           path="/veilingen/:auctionId"
@@ -80,7 +77,10 @@ function App(): JSX.Element {
           }
         />
 
-        <Route path="/aankomende-producten" element={<UpcomingProducts />} />
+        <Route
+          path="/aankomende-producten"
+          element={<UpcomingProducts />}
+        />
 
         <Route
           path="/AanvoerderItem"
