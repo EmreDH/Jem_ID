@@ -3,7 +3,7 @@ public class AuctionItem
     public int Id { get; set; }
 
     public int AanvoerItemId { get; set; }
-    public AanvoerderItem AanvoerderItem { get; set; }
+    public AanvoerderItem AanvoerderItem { get; set; } = null!;
 
     public decimal StartPrice { get; set; }
     public decimal CurrentPrice { get; set; }

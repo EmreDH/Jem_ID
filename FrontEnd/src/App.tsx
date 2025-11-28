@@ -71,14 +71,30 @@ function App(): JSX.Element {
           element={<LiveAuction />}
         />
 
-        <Route
-          path="/veilingen/:auctionId"
-          element={
-            <ProtectedRoute roles={["klant", "Admin"]}>
-              <AuctionDetailPage />
-            </ProtectedRoute>
-          }
-        />
+          <Route
+            path="/AanvoerderItem"
+            element={
+              <ProtectedRoute roles={["Admin"]}>
+                <AanvoerderItem />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/aankomende-producten"
+            element={<UpcomingProducts />
+            }
+          />
+
+           <Route
+            path="/veilingen/:auctionId"
+            element={
+              <ProtectedRoute roles={["klant", "Admin"]}>
+                <AuctionDetailPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route path="/aankomende-producten" element={<UpcomingProducts />} />
 
         <Route path="/aankomende-producten" element={<UpcomingProducts />} />
 
