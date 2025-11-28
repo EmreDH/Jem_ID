@@ -4,6 +4,7 @@ using BackEnd.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace backendAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251124131744_AddAanvoerderUserRelatio")]
+    partial class AddAanvoerderUserRelatio
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,47 +85,6 @@ namespace backendAPI.Migrations
                     b.ToTable("AanvoerItems", (string)null);
                 });
 
-            modelBuilder.Entity("AuctionItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AanvoerItemId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("CurrentPrice")
-                        .HasPrecision(10, 2)
-                        .HasColumnType("decimal(10,2)");
-
-                    b.Property<DateTime>("EndTimeUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("FinalPrice")
-                        .HasPrecision(10, 2)
-                        .HasColumnType("decimal(10,2)");
-
-                    b.Property<bool>("IsFinished")
-                        .HasColumnType("bit");
-
-                    b.Property<decimal>("StartPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("StartTimeUtc")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AanvoerItemId")
-                        .IsUnique();
-
-                    b.HasIndex("EndTimeUtc");
-
-                    b.ToTable("AuctionItems", (string)null);
-                });
-
             modelBuilder.Entity("BackEnd.Classes.Aanvoerder", b =>
                 {
                     b.Property<int>("Id")
@@ -139,6 +101,54 @@ namespace backendAPI.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Aanvoerders", (string)null);
+                });
+
+            modelBuilder.Entity("BackEnd.Classes.AuctionItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AanvoerderItemId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("BuyerId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CurrentLeaderId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("CurrentPrice")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<DateTime>("EndTimeUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal?>("FinalPrice")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<bool>("IsClosed")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("StartTimeUtc")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AanvoerderItemId")
+                        .IsUnique();
+
+                    b.HasIndex("BuyerId");
+
+                    b.HasIndex("CurrentLeaderId");
+
+                    b.HasIndex("EndTimeUtc");
+
+                    b.ToTable("AuctionItems", (string)null);
                 });
 
             modelBuilder.Entity("BackEnd.Classes.User", b =>
@@ -166,10 +176,8 @@ namespace backendAPI.Migrations
 
                     b.Property<string>("Role")
                         .IsRequired()
-                        .ValueGeneratedOnAdd()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasDefaultValue("Klant");
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -190,17 +198,6 @@ namespace backendAPI.Migrations
                     b.Navigation("Aanvoerder");
                 });
 
-            modelBuilder.Entity("AuctionItem", b =>
-                {
-                    b.HasOne("AanvoerderItem", "AanvoerderItem")
-                        .WithOne()
-                        .HasForeignKey("AuctionItem", "AanvoerItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AanvoerderItem");
-                });
-
             modelBuilder.Entity("BackEnd.Classes.Aanvoerder", b =>
                 {
                     b.HasOne("BackEnd.Classes.User", "User")
@@ -210,6 +207,29 @@ namespace backendAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BackEnd.Classes.AuctionItem", b =>
+                {
+                    b.HasOne("AanvoerderItem", "AanvoerderItem")
+                        .WithOne()
+                        .HasForeignKey("BackEnd.Classes.AuctionItem", "AanvoerderItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BackEnd.Classes.User", "Buyer")
+                        .WithMany()
+                        .HasForeignKey("BuyerId");
+
+                    b.HasOne("BackEnd.Classes.User", "CurrentLeader")
+                        .WithMany()
+                        .HasForeignKey("CurrentLeaderId");
+
+                    b.Navigation("AanvoerderItem");
+
+                    b.Navigation("Buyer");
+
+                    b.Navigation("CurrentLeader");
                 });
 
             modelBuilder.Entity("BackEnd.Classes.Aanvoerder", b =>

@@ -58,7 +58,6 @@ public class AuthController : ControllerBase
         {
             Name = request.Name.Trim(),
             Email = email,
-            Role = Role.Admin,
             PasswordHash = PasswordHasher.HashPassword(request.Password)
         };
 
@@ -72,8 +71,8 @@ public class AuthController : ControllerBase
     [HttpGet("profile")]
     public async Task<IActionResult> GetProfile()
     {
-        var email =
-            User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Email)?.Value
+        var email = User.Claims
+            .FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Email)?.Value
             ?? User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
 
         if (string.IsNullOrWhiteSpace(email))
@@ -84,11 +83,11 @@ public class AuthController : ControllerBase
         var user = await _context.Users
             .AsNoTracking()
             .Where(u => u.Email == email)
-            .Select(u => new
+            .Select(u => new UserProfileDTO
             {
-                u.Id,
-                u.Name,
-                u.Email,
+                Id = u.Id,
+                Name = u.Name,
+                Email = u.Email,
                 Role = u.Role.ToString()
             })
             .FirstOrDefaultAsync();
@@ -120,15 +119,12 @@ public class AuthController : ControllerBase
         if (user == null)
             return NotFound(new { message = "Gebruiker niet gevonden" });
 
-        // Update name
         if (!string.IsNullOrWhiteSpace(dto.Name))
             user.Name = dto.Name.Trim();
 
-        // Update email
         if (!string.IsNullOrWhiteSpace(dto.Email))
             user.Email = dto.Email.Trim().ToLowerInvariant();
 
-        // Update password
         if (!string.IsNullOrWhiteSpace(dto.Password))
             user.PasswordHash = PasswordHasher.HashPassword(dto.Password);
 
@@ -137,10 +133,9 @@ public class AuthController : ControllerBase
         return Ok(new { message = "Profiel succesvol bijgewerkt!" });
     }
 
-
     [Authorize(Roles = "admin")]
     [HttpPut("promote-admin")]
-    public async Task<IActionResult> PromoteAdmin([FromBody] UpdateProfileDTO dto)
+    public async Task<IActionResult> PromoteAdmin([FromBody] PromoteAdminDTO dto)
     {
         if (dto is null || string.IsNullOrWhiteSpace(dto.Email))
             return BadRequest(new { message = "Email is verplicht." });
