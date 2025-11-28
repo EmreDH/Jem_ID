@@ -26,48 +26,33 @@ function App(): JSX.Element {
         flexDirection: "column",
         minHeight: "100vh",
         backgroundColor: "#F7F8FC",
-      }}
-    >
-      {/* ✅ Navbar ALWAYS visible now */}
+      }}>
       <Navbar />
 
       <div style={{ flex: 1 }}>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/veilingen" element={<Veilingen />} />
-          <Route path="/profiel" element={<Profiel />} />
-          <Route path="/actuele-product" element={<ActueleProduct />} />
-          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/forbidden" element={<Forbidden />} />
-          <Route path="/aankomende-producten" element={<UpcomingProducts />} />
-          <Route path="/AanvoerderItem" element={<AanvoerderItem />} />
-          <Route path="/Veilingmaster/:id" element={<Veilingmaster />} />
-          <Route path="/Veilingmaster/" element={<Veilingmaster />} />
 
-          <Route>
-            {/* ...andere routes... */}
-
-            <Route path="/veiling/live/:id" element={<LiveAuction />} />
-          </Route>
-
-          {/* Protected routes */}
-          <Route
-            path="/veilingen"
-            element={
-              <ProtectedRoute roles={["klant", "Admin"]}>
-                <Veilingen />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/actuele-product" element={<ActueleProduct />} />
 
           <Route
             path="/dashboard"
             element={
               <ProtectedRoute roles={["Admin"]}>
                 <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/profiel"
+            element={
+              <ProtectedRoute roles={["klant", "Admin"]}>
+                <Profiel />
               </ProtectedRoute>
             }
           />
@@ -80,35 +65,61 @@ function App(): JSX.Element {
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/aankomende-producten"
-            element={<UpcomingProducts />
-            }
-          />
-
-           <Route
-            path="/veilingen/:auctionId"
             element={
-              <ProtectedRoute roles={["klant", "Admin"]}>
-                <AuctionDetailPage />
+              <ProtectedRoute roles={["Admin", "Veilingmeester"]}>
+                <UpcomingProducts />
               </ProtectedRoute>
             }
           />
 
-          <Route path="/aankomende-producten" element={<UpcomingProducts />} />
+          <Route
+            path="/Veilingmaster/:id"
+            element={
+              <ProtectedRoute roles={["Veilingmeester", "Admin"]}>
+                <Veilingmaster />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/Veilingmaster"
+            element={
+              <ProtectedRoute roles={["Veilingmeester", "Admin"]}>
+                <Veilingmaster />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/veilingen"
+            element={
+              <ProtectedRoute roles={["klant", "Admin", "Veilingmeester"]}>
+                <Veilingen />
+              </ProtectedRoute>
+            }
+          />
 
           <Route
             path="/veilingen/:auctionId"
             element={
-              <ProtectedRoute roles={["klant", "Admin"]}>
+              <ProtectedRoute roles={["klant", "Admin", "Veilingmeester"]}>
                 <AuctionDetailPage />
               </ProtectedRoute>
             }
           />
 
-          <Route path="/aankomende-producten" element={<UpcomingProducts />} />
+          <Route
+            path="/veiling/live/:id"
+            element={
+              <ProtectedRoute roles={["klant", "Admin", "Veilingmeester"]}>
+                <LiveAuction />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
-        /
       </div>
     </div>
   );
