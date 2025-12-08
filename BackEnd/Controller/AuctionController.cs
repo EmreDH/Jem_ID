@@ -21,7 +21,7 @@ namespace BackEnd.Controller
             _context = context;
         }
 
-        [Authorize(Roles = "Veilingmeester,Admin")]
+        [Authorize(Roles = "veilingmeester,admin")]
         [HttpPost("start/{id:int}")]
         public async Task<IActionResult> StartAuction(int id)
         {
