@@ -22,14 +22,14 @@ function App(): JSX.Element {
   return (
     <Layout>
       <Routes>
-        {/* Public routes */}
+        {/* Public Routes */}
         <Route path="/" element={<HomePage />} />
-        <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="/forbidden" element={<Forbidden />} />
 
-        {/* Protected routes */}
+        {/* Protected Routes */}
         <Route
           path="/dashboard"
           element={
@@ -60,43 +60,29 @@ function App(): JSX.Element {
         <Route
           path="/veilingen"
           element={
-            <ProtectedRoute roles={["klant", "Admin"]}>
+            <ProtectedRoute roles={["klant", "Admin", "Veilingmeester"]}>
               <Veilingen />
             </ProtectedRoute>
           }
         />
 
         <Route
-          path="/veiling/live/:id"
-          element={<LiveAuction />}
+          path="/veilingen/:auctionId"
+          element={
+            <ProtectedRoute roles={["klant", "Admin", "Veilingmeester"]}>
+              <AuctionDetailPage />
+            </ProtectedRoute>
+          }
         />
 
-          <Route
-            path="/AanvoerderItem"
-            element={
-              <ProtectedRoute roles={["Admin"]}>
-                <AanvoerderItem />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/aankomende-producten"
-            element={<UpcomingProducts />
-            }
-          />
-
-           <Route
-            path="/veilingen/:auctionId"
-            element={
-              <ProtectedRoute roles={["klant", "Admin"]}>
-                <AuctionDetailPage />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route path="/aankomende-producten" element={<UpcomingProducts />} />
-
-        <Route path="/aankomende-producten" element={<UpcomingProducts />} />
+        <Route
+          path="/veiling/live/:id"
+          element={
+            <ProtectedRoute roles={["klant", "Admin", "Veilingmeester"]}>
+              <LiveAuction />
+            </ProtectedRoute>
+          }
+        />
 
         <Route
           path="/AanvoerderItem"
@@ -107,7 +93,32 @@ function App(): JSX.Element {
           }
         />
 
-        <Route path="/Veilingmaster/:id" element={<Veilingmaster />} />
+        <Route
+          path="/aankomende-producten"
+          element={
+            <ProtectedRoute roles={["Admin", "Veilingmeester"]}>
+              <UpcomingProducts />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/Veilingmaster"
+          element={
+            <ProtectedRoute roles={["Veilingmeester", "Admin"]}>
+              <Veilingmaster />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/Veilingmaster/:id"
+          element={
+            <ProtectedRoute roles={["Veilingmeester", "Admin"]}>
+              <Veilingmaster />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </Layout>
   );

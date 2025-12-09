@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace BackEnd.Controller
 {
@@ -20,7 +21,7 @@ namespace BackEnd.Controller
             _context = context;
         }
 
-        [Authorize(Roles = "Veilingmeester,Admin")]
+        [Authorize(Roles = "veilingmeester,admin")]
         [HttpPost("start/{id:int}")]
         public async Task<IActionResult> StartAuction(int id)
         {
@@ -105,6 +106,30 @@ namespace BackEnd.Controller
             await _context.SaveChangesAsync();
             return Ok(auction);
         }
+
+        [HttpGet("active")]
+        public async Task<IActionResult> GetActiveAuctions()
+        {
+            var auctions = await _context.AuctionItems
+                .Include(a => a.AanvoerderItem)
+                .Where(a => !a.IsFinished)
+                .OrderBy(a => a.StartTimeUtc)
+                .Select(a => new
+                {
+                    id = a.Id,
+                    productId = a.AanvoerItemId,
+                    naam = a.AanvoerderItem.Naam_Product,
+                    soort = a.AanvoerderItem.Soort,
+                    fotoUrl = a.AanvoerderItem.FotoUrl,
+                    minimumPrijs = a.AanvoerderItem.MinimumPrijs,
+                    currentPrice = a.CurrentPrice,
+                    kloklocatie = a.AanvoerderItem.GewensteKlokLocatie.ToString()
+                })
+                .ToListAsync();
+
+            return Ok(auctions);
+        }
+
 
         [HttpGet("detail/{auctionId:int}")]
         public async Task<ActionResult<AuctionDetailDTO>> GetAuctionDetail(int auctionId)
