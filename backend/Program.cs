@@ -64,8 +64,7 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddSingleton<JwtService>();
 
-builder.Services.AddDbContext<ApplicationDbContext>(opt =>
-    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
 // CORS instellingen voor frontend verbindingen
 builder.Services.AddCors(o =>
@@ -112,4 +111,7 @@ app.UseAuthorization();
 // Controllers worden automatisch gemapt
 app.MapControllers();
 
+
 app.Run();
+
+public partial class Program { }

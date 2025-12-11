@@ -48,8 +48,6 @@ function App(): JSX.Element {
           <Route path="/Veilingmaster/" element={<Veilingmaster />} />
 
           <Route>
-            {/* ...andere routes... */}
-
             <Route path="/veiling/live/:id" element={<LiveAuction />} />
           </Route>
 
@@ -59,6 +57,15 @@ function App(): JSX.Element {
             element={
               <ProtectedRoute roles={["klant", "Admin"]}>
                 <Veilingen />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/aankomende-producten"
+            element={
+              <ProtectedRoute roles={["Admin"]}>
+                <UpcomingProducts />
               </ProtectedRoute>
             }
           />
