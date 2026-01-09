@@ -16,6 +16,7 @@ import ActueleProduct from "./pages/ActueleProduct";
 import Veilingen from "./pages/Veilingen";
 import AuctionDetailPage from "./pages/AuctionDetail";
 import Veilingmaster from "./pages/Veilingmaster";
+import LiveAuction from "./pages/LiveAuction";
 
 function App(): JSX.Element {
   return (
@@ -59,7 +60,7 @@ function App(): JSX.Element {
         <Route
           path="/veilingen"
           element={
-            <ProtectedRoute roles={["klant", "Admin"]}>
+            <ProtectedRoute roles={["klant", "Admin", "Veilingmeester"]}>
               <Veilingen />
             </ProtectedRoute>
           }
@@ -68,7 +69,7 @@ function App(): JSX.Element {
         <Route
           path="/veilingen/:auctionId"
           element={
-            <ProtectedRoute roles={["klant", "Admin"]}>
+            <ProtectedRoute roles={["klant", "Admin", "Veilingmeester"]}>
               <AuctionDetailPage />
             </ProtectedRoute>
           }
@@ -76,7 +77,11 @@ function App(): JSX.Element {
 
         <Route
           path="/aankomende-producten"
-          element={<UpcomingProducts />}
+          element={
+            <ProtectedRoute roles={["Admin", "Veilingmeester"]}>
+              <UpcomingProducts />
+            </ProtectedRoute>
+          }
         />
 
         <Route
@@ -88,7 +93,34 @@ function App(): JSX.Element {
           }
         />
 
-        <Route path="/Veilingmaster/:id" element={<Veilingmaster />} />
+        {/* Veilingmeester/Admin routes */}
+        <Route
+          path="/Veilingmaster/:id"
+          element={
+            <ProtectedRoute roles={["Veilingmeester", "Admin"]}>
+              <Veilingmaster />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/Veilingmaster"
+          element={
+            <ProtectedRoute roles={["Veilingmeester", "Admin"]}>
+              <Veilingmaster />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Live auction */}
+        <Route
+          path="/veiling/live/:id"
+          element={
+            <ProtectedRoute roles={["klant", "Admin", "Veilingmeester"]}>
+              <LiveAuction />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </Layout>
   );

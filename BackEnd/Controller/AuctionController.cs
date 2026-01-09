@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace BackEnd.Controller
 {
@@ -21,78 +21,117 @@ namespace BackEnd.Controller
             _context = context;
         }
 
-
-        [Authorize(Roles = "Veilingmeester,Admin")]
-        [HttpPost("start/{aanvoerderItemId:int}")]
-        public async Task<IActionResult> Start(int aanvoerderItemId)
+        [Authorize(Roles = "veilingmeester,admin")]
+        [HttpPost("start/{id:int}")]
+        public async Task<IActionResult> StartAuction(int id)
         {
-            var item = await _context.AanvoerItems
-                .AsNoTracking()
-                .FirstOrDefaultAsync(i => i.Id == aanvoerderItemId);
-
+            var item = await _context.AanvoerItems.FindAsync(id);
             if (item == null)
-                return NotFound(new { message = "Item niet gevonden" });
+                return NotFound("Product niet gevonden.");
 
-            var already = await _context.AuctionItems
-                .AnyAsync(a => a.AanvoerItemId == aanvoerderItemId && !a.IsClosed);
+            var auction = await _context.AuctionItems
+                .FirstOrDefaultAsync(a => a.AanvoerItemId == id);
 
-            if (already)
-                return Conflict(new { message = "Voor dit item is er al een veiling gestart" });
-
-            var now = DateTime.UtcNow;
-
-            var auction = new AuctionItem
+            if (auction == null)
             {
-                AanvoerItemId = item.Id,
-                StartTimeUtc = now,
-                EndTimeUtc = now.AddMinutes(2),
-                CurrentPrice = item.MinimumPrijs,
-                IsClosed = false
-            };
+                auction = new AuctionItem
+                {
+                    AanvoerItemId = id
+                };
+                _context.AuctionItems.Add(auction);
+            }
 
-            _context.AuctionItems.Add(auction);
+            auction.StartPrice = item.MinimumPrijs;
+            auction.CurrentPrice = item.MinimumPrijs;
+            auction.StartTimeUtc = DateTime.UtcNow;
+            auction.EndTimeUtc = DateTime.UtcNow.AddSeconds(20);
+            auction.IsFinished = false;
+
             await _context.SaveChangesAsync();
-
-            return Ok(new
-            {
-                message = "Veiling gestart",
-                auctionId = auction.Id,
-                startTimeUtc = auction.StartTimeUtc,
-                endTimeUtc = auction.EndTimeUtc,
-                currentPrice = auction.CurrentPrice
-            });
+            return Ok(auction);
         }
 
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetAuction(int id)
+        {
+            var auction = await _context.AuctionItems
+                .Include(a => a.AanvoerderItem)
+                .FirstOrDefaultAsync(a => a.AanvoerItemId == id);
+
+            if (auction == null)
+                return NotFound();
+
+            if (!auction.IsFinished)
+            {
+                var elapsedMs = (DateTime.UtcNow - auction.StartTimeUtc).TotalMilliseconds;
+
+                var decrease = (decimal)(elapsedMs / 100.0) * 0.02m;
+                var newPrice = Math.Max(0, auction.StartPrice - decrease);
+
+                auction.CurrentPrice = newPrice;
+
+                if (newPrice <= 0)
+                {
+                    auction.IsFinished = true;
+                    auction.FinalPrice = 0;
+                    await _context.SaveChangesAsync();
+                    return Ok(auction);
+                }
+            }
+
+            return Ok(auction);
+        }
+
+        [HttpPost("bid/{id}")]
+        public async Task<IActionResult> Bid(int id)
+        {
+            var auction = await _context.AuctionItems
+                .FirstOrDefaultAsync(a => a.AanvoerItemId == id);
+
+            if (auction == null)
+                return NotFound();
+
+            if (auction.IsFinished)
+                return BadRequest("Veiling is al afgelopen.");
+
+            var elapsedMs = (DateTime.UtcNow - auction.StartTimeUtc).TotalMilliseconds;
+            var decrease = (decimal)(elapsedMs / 100.0) * 0.02m;
+
+            var livePrice = Math.Max(0, auction.StartPrice - decrease);
+
+            auction.IsFinished = true;
+            auction.FinalPrice = livePrice;
+            auction.CurrentPrice = livePrice;
+
+            await _context.SaveChangesAsync();
+            return Ok(auction);
+        }
 
         [HttpGet("active")]
-        public async Task<IActionResult> GetActiveAuction()
+        public async Task<IActionResult> GetActiveAuctions()
         {
-            var activeAuction = await _context.AuctionItems
+            var auctions = await _context.AuctionItems
                 .Include(a => a.AanvoerderItem)
-                .Where(a => !a.IsClosed)
-                .OrderByDescending(a => a.StartTimeUtc)
-                .FirstOrDefaultAsync();
+                .Where(a => !a.IsFinished)
+                .OrderBy(a => a.StartTimeUtc)
+                .Select(a => new
+                {
+                    id = a.Id,
+                    productId = a.AanvoerItemId,
+                    naam = a.AanvoerderItem.Naam_Product,
+                    soort = a.AanvoerderItem.Soort,
+                    fotoUrl = a.AanvoerderItem.FotoUrl,
+                    minimumPrijs = a.AanvoerderItem.MinimumPrijs,
+                    currentPrice = a.CurrentPrice,
+                    kloklocatie = a.AanvoerderItem.GewensteKlokLocatie.ToString()
+                })
+                .ToListAsync();
 
-            if (activeAuction == null)
-                return NotFound(new { message = "Geen actieve veiling gevonden." });
-
-            return Ok(new
-            {
-                auctionId = activeAuction.Id,
-                productId = activeAuction.AanvoerItemId,
-                productName = activeAuction.AanvoerderItem.Naam_Product,
-                description = activeAuction.AanvoerderItem.Soort,
-                fotoUrl = activeAuction.AanvoerderItem.FotoUrl,
-                hoeveelheid = activeAuction.AanvoerderItem.Hoeveelheid,
-                minimumPrijs = activeAuction.AanvoerderItem.MinimumPrijs,
-                currentPrice = activeAuction.CurrentPrice,
-                startTimeUtc = activeAuction.StartTimeUtc,
-                endTimeUtc = activeAuction.EndTimeUtc,
-                isClosed = activeAuction.IsClosed
-            });
+            return Ok(auctions);
         }
 
-        [HttpGet("{auctionId:int}")]
+
+        [HttpGet("detail/{auctionId:int}")]
         public async Task<ActionResult<AuctionDetailDTO>> GetAuctionDetail(int auctionId)
         {
             var auction = await _context.AuctionItems
@@ -133,7 +172,7 @@ namespace BackEnd.Controller
                 StapSeconden = 1,       // elke 2 seconden (demo)
                 StartTijdUtc = auction.StartTimeUtc,
 
-                IsGesloten = auction.IsClosed,
+                IsGesloten = auction.IsFinished,
                 WinnaarNaam = null,
                 WinnendePrijs = null
             };
