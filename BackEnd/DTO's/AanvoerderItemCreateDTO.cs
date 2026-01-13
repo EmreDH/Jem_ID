@@ -1,9 +1,14 @@
 using System.ComponentModel.DataAnnotations;
+using BackEnd.Classes;
 
 namespace BackEnd.DTOs
 {
     public class AanvoerderItemCreateDTO
     {
+        // Used when admin creates an item for a specific Aanvoerder
+        // Aanvoerder users ignore this field
+        public int? AanvoerderId { get; set; }
+
         public string? FotoUrl { get; set; }
 
         [Required]

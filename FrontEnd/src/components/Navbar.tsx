@@ -17,6 +17,9 @@ const Navbar: React.FC = () => {
     navigate("/login");
   };
 
+  const isActive = (path: string) => location.pathname === path;
+  const startsWith = (path: string) => location.pathname.startsWith(path);
+
   return (
     <nav
       className="navbar navbar-expand-lg navbar-dark bg-success shadow-sm fixed-top main-navbar"
@@ -24,11 +27,7 @@ const Navbar: React.FC = () => {
     >
       <div className="container">
         {/* Brand */}
-        <Link
-          className="navbar-brand fw-bold"
-          to="/"
-          aria-label="Go to homepage"
-        >
+        <Link className="navbar-brand fw-bold" to="/" aria-label="Go to homepage">
           jem.id
         </Link>
 
@@ -50,12 +49,7 @@ const Navbar: React.FC = () => {
           <ul className="navbar-nav ms-auto align-items-center">
             {/* PUBLIC LINKS */}
             <li className="nav-item">
-              <Link
-                to="/"
-                className={`nav-link ${
-                  location.pathname === "/" ? "active" : ""
-                }`}
-              >
+              <Link to="/" className={`nav-link ${isActive("/") ? "active" : ""}`}>
                 Home
               </Link>
             </li>
@@ -63,9 +57,7 @@ const Navbar: React.FC = () => {
             <li className="nav-item">
               <Link
                 to="/contact"
-                className={`nav-link ${
-                  location.pathname === "/contact" ? "active" : ""
-                }`}
+                className={`nav-link ${isActive("/contact") ? "active" : ""}`}
               >
                 Contact
               </Link>
@@ -76,9 +68,7 @@ const Navbar: React.FC = () => {
               <li className="nav-item">
                 <Link
                   to="/veilingen"
-                  className={`nav-link ${
-                    location.pathname === "/veilingen" ? "active" : ""
-                  }`}
+                  className={`nav-link ${startsWith("/veilingen") ? "active" : ""}`}
                 >
                   Veilingen
                 </Link>
@@ -89,9 +79,7 @@ const Navbar: React.FC = () => {
               <li className="nav-item">
                 <Link
                   to="/dashboard"
-                  className={`nav-link ${
-                    location.pathname === "/dashboard" ? "active" : ""
-                  }`}
+                  className={`nav-link ${startsWith("/dashboard") ? "active" : ""}`}
                 >
                   Dashboard
                 </Link>
@@ -102,9 +90,7 @@ const Navbar: React.FC = () => {
               <li className="nav-item">
                 <Link
                   to="/actuele-product"
-                  className={`nav-link ${
-                    location.pathname === "/actuele-product" ? "active" : ""
-                  }`}
+                  className={`nav-link ${startsWith("/actuele-product") ? "active" : ""}`}
                 >
                   Productbeheer
                 </Link>
@@ -115,9 +101,7 @@ const Navbar: React.FC = () => {
               <li className="nav-item">
                 <Link
                   to="/AanvoerderItem"
-                  className={`nav-link ${
-                    location.pathname === "/AanvoerderItem" ? "active" : ""
-                  }`}
+                  className={`nav-link ${startsWith("/AanvoerderItem") ? "active" : ""}`}
                 >
                   AanvoerderItem
                 </Link>
@@ -129,12 +113,22 @@ const Navbar: React.FC = () => {
                 <Link
                   to="/aankomende-producten"
                   className={`nav-link ${
-                    location.pathname === "/aankomende-producten"
-                      ? "active"
-                      : ""
+                    startsWith("/aankomende-producten") ? "active" : ""
                   }`}
                 >
                   Aankomende Producten
+                </Link>
+              </li>
+            )}
+
+            {/* ✅ Veilingmaster link */}
+            {hasPermission("viewVeilingmaster") && (
+              <li className="nav-item">
+                <Link
+                  to="/Veilingmaster"
+                  className={`nav-link ${startsWith("/Veilingmaster") ? "active" : ""}`}
+                >
+                  Veilingmaster
                 </Link>
               </li>
             )}
@@ -143,9 +137,7 @@ const Navbar: React.FC = () => {
               <li className="nav-item">
                 <Link
                   to="/profiel"
-                  className={`nav-link ${
-                    location.pathname === "/profiel" ? "active" : ""
-                  }`}
+                  className={`nav-link ${startsWith("/profiel") ? "active" : ""}`}
                 >
                   Profiels
                 </Link>

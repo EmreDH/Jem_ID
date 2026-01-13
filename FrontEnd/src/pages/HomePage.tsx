@@ -1,17 +1,27 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../styling/HomePage.css";
+import heroImg from "../assets/plant-auction.jpg";
+
 
 function HomePage() {
   return (
     <div className="homepage-container">
-
       {/* ======================= HERO ======================= */}
       <section className="hero-section">
-        <div className="hero-left">
+        {/* background image layer */}
+        <div
+  className="hero-bg"
+  aria-hidden="true"
+  style={{ backgroundImage: `url(${heroImg})` }}
+/>
+
+
+        {/* overlay headline card */}
+        <div className="hero-overlay-card">
           <h1>De toekomst van online veilingen voor AGF & sierteelt</h1>
           <p>
-            Wij helpen bedrijven slimmer te kopen en verkopen via digitale veilingen. 
+            Wij helpen bedrijven slimmer te kopen en verkopen via digitale veilingen.
             Efficiënt, veilig, betrouwbaar en volledig geautomatiseerd.
           </p>
 
@@ -20,11 +30,19 @@ function HomePage() {
           </Link>
         </div>
 
-        <div className="hero-right">
-          <img
-            src="https://lumencms.blob.core.windows.net/media/543/280222nw-jemid-diyou-_AS_7447-WEB-(1).jpg"
-            alt="Online veilingen software"
-          />
+        {/* overlapping USP cards (like the screenshot) */}
+        <div className="hero-bottom-cards">
+          <div className="hero-mini-card">
+            <h3>Supplying</h3>
+            <p>Lees meer over supplying.</p>
+            <Link to="/supplying" className="mini-link">More about supplying →</Link>
+          </div>
+
+          <div className="hero-mini-card">
+            <h3>Purchasing</h3>
+            <p>Lees meer over purchasing.</p>
+            <Link to="/purchasing" className="mini-link">More about purchasing →</Link>
+          </div>
         </div>
       </section>
 
@@ -33,7 +51,6 @@ function HomePage() {
         <h2>Waarom bedrijven kiezen voor ons?</h2>
 
         <div className="usp-grid">
-
           <div className="usp-card">
             <span className="usp-icon">⚡</span>
             <h3>Snelle veilingen</h3>
@@ -87,6 +104,8 @@ function HomePage() {
           Account aanmaken
         </Link>
       </section>
+
+      
     </div>
   );
 }

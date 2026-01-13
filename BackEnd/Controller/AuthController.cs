@@ -58,7 +58,7 @@ public class AuthController : ControllerBase
         {
             Name = request.Name.Trim(),
             Email = email,
-            Role = Role.Admin,
+            Role = Role.Klant,
             PasswordHash = PasswordHasher.HashPassword(request.Password)
         };
 

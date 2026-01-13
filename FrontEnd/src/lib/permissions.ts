@@ -1,29 +1,43 @@
 // FrontEnd/src/lib/permissions.ts
 import { getUserRole } from "./auth";
 
-export type Role = "admin" | "klant" | "guest";
+export type Role =
+  | "admin"
+  | "klant"
+  | "aanvoerder"
+  | "veilingmeester"
+  | "user"
+  | "guest";
 
 export interface Permissions {
   [action: string]: Role[];
 }
 
-// Step 1 – Define what each role can do
+// Define what each role can do
 export const permissions: Permissions = {
+  // Viewing
+  viewVeilingen: ["admin", "klant", "veilingmeester"],
+  viewAankomendeProducten: ["admin", "veilingmeester"],
+  viewProfile: ["admin", "klant", "veilingmeester", "aanvoerder"],
+
+  // Admin
   viewDashboard: ["admin"],
   manageProducts: ["admin"],
-  viewVeilingen: ["admin", "klant"],
-  placeBid: ["klant"],
-  viewProfile: ["admin", "klant"],
-  contactSupport: ["klant", "admin"],
-  viewAanvoerderItem: ["admin"],
-  viewAankomendeProducten: ["klant", "admin"],
+
+  // Aanvoerder
+  viewAanvoerderItem: ["admin", "aanvoerder"],
+
+  // Veilingmeester
+  viewVeilingmaster: ["admin", "veilingmeester"],
+
+  // Actions (if you use these later)
+  placeBid: ["admin", "klant"],
+  startAuction: ["admin", "veilingmeester"],
 };
 
-// Step 2 – Add permission helper
-export function hasPermission(action: string): boolean {
-  const role = getUserRole();
-  if (!role) return false;
+export function hasPermission(action: keyof typeof permissions): boolean {
+  const role = (getUserRole() || "guest").toLowerCase() as Role;
 
   const allowedRoles = permissions[action];
-  return allowedRoles ? allowedRoles.includes(role as Role) : false;
+  return !!allowedRoles && allowedRoles.includes(role);
 }

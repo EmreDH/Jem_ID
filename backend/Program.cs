@@ -2,14 +2,16 @@ using BackEnd.Classes;
 using BackEnd.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json.Serialization;
-
-using Microsoft.Extensions.FileProviders;
 using System.IO;
+
+// Ensure wwwroot exists so ASP.NET WebRootFileProvider won't crash
+Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"));
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,19 +27,22 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(opt =>
     {
         opt.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)
-            ),
-            RoleClaimType = ClaimTypes.Role,
-            NameClaimType = ClaimTypes.Email,
-            ClockSkew = TimeSpan.Zero
-        };
+{
+    ValidateIssuer = true,
+    ValidateAudience = true,
+    ValidateLifetime = true,
+    ValidateIssuerSigningKey = true,
+
+    ValidIssuer = builder.Configuration["Jwt:Issuer"],
+    ValidAudience = builder.Configuration["Jwt:Audience"],
+    IssuerSigningKey = new SymmetricSecurityKey(
+        Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])
+    ),
+
+    RoleClaimType = ClaimTypes.Role,              // 👈 REQUIRED
+    NameClaimType = ClaimTypes.NameIdentifier     // 👈 REQUIRED
+};
+
     });
 
 // Policies voor (Authorize)
@@ -58,6 +63,7 @@ builder.Services.AddSwaggerGen(c =>
         BearerFormat = "JWT",
         Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
     };
+
     c.AddSecurityDefinition("Bearer", jwt);
     c.AddSecurityRequirement(new OpenApiSecurityRequirement { { jwt, Array.Empty<string>() } });
 });
@@ -91,14 +97,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseStaticFiles();
-
-// Pad naar de uploads map in backend project
+// ✅ Serve ONLY the uploads folder (no default wwwroot needed)
 var uploadsPath = Path.Combine(builder.Environment.ContentRootPath, "uploads");
-
 Directory.CreateDirectory(uploadsPath);
 
-// Alles in uploads wordt nu geserveerd onder de url uploads
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(uploadsPath),
@@ -109,7 +111,6 @@ app.UseCors("frontend");
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Controllers worden automatisch gemapt
 app.MapControllers();
 
 app.Run();
