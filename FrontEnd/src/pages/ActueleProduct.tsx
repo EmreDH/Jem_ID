@@ -1,11 +1,14 @@
+// src/pages/ActueleProduct.tsx
 import React, { useEffect, useState } from "react";
 import "../styling/ActueleProduct.css";
 
 const ActueleProduct: React.FC = () => {
   // placeholder states
-  const [timeLeft, setTimeLeft] = useState(3600); // 1 hour
+  const [timeLeft, setTimeLeft] = useState(3600); // 1 uur
   const [currentBid, setCurrentBid] = useState(125.0);
-  const [description, setDescription] = useState("Kist met 10 kg verse tomaten van lokale telers");
+  const [description, setDescription] = useState(
+    "Kist met 10 kg verse tomaten van lokale telers"
+  );
   const [isEditing, setIsEditing] = useState(false);
 
   // countdown timer
@@ -13,6 +16,7 @@ const ActueleProduct: React.FC = () => {
     const timer = setInterval(() => {
       setTimeLeft((t) => (t > 0 ? t - 1 : 0));
     }, 1000);
+
     return () => clearInterval(timer);
   }, []);
 
@@ -41,10 +45,18 @@ const ActueleProduct: React.FC = () => {
           {/* Product images */}
           <div className="row mb-4">
             <div className="col-md-6 text-center">
-              <img src="/images/tomaat1.jpg" alt="Product 1" className="img-fluid rounded" />
+              <img
+                src="/images/tomaat1.jpg"
+                alt="Foto van tomaten product 1"
+                className="img-fluid rounded"
+              />
             </div>
             <div className="col-md-6 text-center">
-              <img src="/images/tomaat2.jpg" alt="Product 2" className="img-fluid rounded" />
+              <img
+                src="/images/tomaat2.jpg"
+                alt="Foto van tomaten product 2"
+                className="img-fluid rounded"
+              />
             </div>
           </div>
 
@@ -71,11 +83,15 @@ const ActueleProduct: React.FC = () => {
           {/* Auction info */}
           <div className="info-section mb-4">
             <h5>Veilinginformatie</h5>
-            <p><strong>Veilingmaster:</strong> Jan de Veilingmeester</p>
-            <p><strong>Locatie:</strong> Aalsmeer</p>
+            <p>
+              <strong>Veilingmaster:</strong> Jan de Veilingmeester
+            </p>
+            <p>
+              <strong>Locatie:</strong> Aalsmeer
+            </p>
           </div>
 
-          {/* Bid section */}
+          {/* Bid section – alleen huidige prijs en knop */}
           <div className="bid-section text-center">
             <h5>Huidig bod</h5>
             <h2 className="text-success">€ {currentBid.toFixed(2)}</h2>
@@ -89,7 +105,9 @@ const ActueleProduct: React.FC = () => {
         </div>
 
         <div className="card-footer text-center bg-light">
-          <button className="btn btn-outline-secondary">Volgende Product</button>
+          <button className="btn btn-outline-secondary">
+            Volgende Product
+          </button>
         </div>
       </div>
     </div>
