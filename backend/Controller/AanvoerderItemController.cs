@@ -1,12 +1,15 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using BackEnd.Classes;
 using BackEnd.Data;
-using System.Security.Claims;
 using BackEnd.DTOs;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize] // ✅ LOCKED: login required by default
 public class AanvoerderItemController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
@@ -16,29 +19,61 @@ public class AanvoerderItemController : ControllerBase
         _context = context;
     }
 
+    // ✅ Only Aanvoerder + Admin can create items
+    [Authorize(Roles = "aanvoerder,admin")]
     [HttpPost]
-    public async Task<IActionResult> CreateAanvoerderItem([FromForm] AanvoerderItemCreateDTO dto, IFormFile foto)
+    public async Task<IActionResult> CreateAanvoerderItem([FromForm] AanvoerderItemCreateDTO dto, IFormFile? foto)
     {
-        var userIdClaim = User.FindFirst(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub)
-                          ?? User.FindFirst(ClaimTypes.NameIdentifier);
+        if (dto == null)
+            return BadRequest("Ongeldige input.");
+
+        var userIdClaim =
+            User.FindFirst(JwtRegisteredClaimNames.Sub)
+            ?? User.FindFirst(ClaimTypes.NameIdentifier);
 
         if (userIdClaim == null)
             return Unauthorized("Geen geldig token gevonden.");
 
-        int aanvoerderId = int.Parse(userIdClaim.Value);
+        if (!int.TryParse(userIdClaim.Value, out var userId))
+            return Unauthorized("Ongeldig token (user id).");
 
+        int aanvoerderId;
+
+        // ✅ Admin can create for any Aanvoerder if AanvoerderId provided
+        if (User.IsInRole("admin") && dto.AanvoerderId.HasValue)
+        {
+            aanvoerderId = dto.AanvoerderId.Value;
+
+            var exists = await _context.Aanvoerders.AnyAsync(a => a.Id == aanvoerderId);
+            if (!exists)
+                return BadRequest("AanvoerderId bestaat niet.");
+        }
+        else
+        {
+            // ✅ Aanvoerder: map UserId -> Aanvoerder.Id
+            var aanvoerder = await _context.Aanvoerders
+                .AsNoTracking()
+                .FirstOrDefaultAsync(a => a.UserId == userId);
+
+            if (aanvoerder == null)
+                return Forbid("Je bent geen aanvoerder.");
+
+            aanvoerderId = aanvoerder.Id;
+        }
+
+        // ✅ Handle foto upload
         if (foto != null)
         {
             var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
             Directory.CreateDirectory(uploadsFolder);
 
-            var fileName = Path.GetFileName(foto.FileName);
-            var filePath = Path.Combine(uploadsFolder, fileName);
+            var safeFileName = Path.GetFileName(foto.FileName);
+            var filePath = Path.Combine(uploadsFolder, safeFileName);
 
             using var stream = new FileStream(filePath, FileMode.Create);
             await foto.CopyToAsync(stream);
 
-            dto.FotoUrl = $"/uploads/{fileName}";
+            dto.FotoUrl = $"/uploads/{safeFileName}";
         }
 
         try
@@ -73,39 +108,40 @@ public class AanvoerderItemController : ControllerBase
         }
     }
 
-   [HttpGet("{id}")]
-        public async Task<IActionResult> GetProductById(int id)
-        {
-            var p = await _context.AanvoerItems
-                .Include(x => x.Aanvoerder)
+    // ✅ Logged-in viewers only
+    [Authorize(Roles = "klant,veilingmeester,admin")]
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetProductById(int id)
+    {
+        var p = await _context.AanvoerItems
+            .Include(x => x.Aanvoerder)
                 .ThenInclude(a => a.User)
-                .Where(x => x.Id == id)
-                .Select(x => new AanvoerderItemListDTO
-                {
-                    Id = x.Id,
-                    Naam_Product = x.Naam_Product,
-                    FotoUrl = x.FotoUrl,
-                    Soort = x.Soort,
-                    Potmaat = x.Potmaat,
-                    Steellengte = x.Steellengte,
-                    Hoeveelheid = x.Hoeveelheid,
-                    MinimumPrijs = x.MinimumPrijs,
-                    GewensteKloklocatie = x.GewensteKlokLocatie.ToString(),
-                    Veildatum = x.Veildatum,
-                    AanvoerderId = x.AanvoerderId,
-                    AanvoerderName = x.Aanvoerder.User.Name
-                })
-                .FirstOrDefaultAsync();
+            .Where(x => x.Id == id)
+            .Select(x => new AanvoerderItemListDTO
+            {
+                Id = x.Id,
+                Naam_Product = x.Naam_Product,
+                FotoUrl = x.FotoUrl,
+                Soort = x.Soort,
+                Potmaat = x.Potmaat,
+                Steellengte = x.Steellengte,
+                Hoeveelheid = x.Hoeveelheid,
+                MinimumPrijs = x.MinimumPrijs,
+                GewensteKloklocatie = x.GewensteKlokLocatie.ToString(),
+                Veildatum = x.Veildatum,
+                AanvoerderId = x.AanvoerderId,
+                AanvoerderName = x.Aanvoerder.User.Name
+            })
+            .FirstOrDefaultAsync();
 
-            if (p == null)
-                return NotFound();
+        if (p == null)
+            return NotFound();
 
-            return Ok(p);
-        }
+        return Ok(p);
+    }
 
-
-
-
+    // ✅ LOCKED (per your "locked" choice)
+    [Authorize(Roles = "klant,veilingmeester,admin")]
     [HttpGet("upcoming-products")]
     public IActionResult GetUpcomingProducts([FromQuery] string? location)
     {
@@ -113,11 +149,9 @@ public class AanvoerderItemController : ControllerBase
         {
             var productsQuery = _context.AanvoerItems
                 .Include(p => p.Aanvoerder)
-                .ThenInclude(a => a.User)
+                    .ThenInclude(a => a.User)
                 .AsQueryable();
 
-
-            // Alleen filteren als er een locatie is gekozen
             if (!string.IsNullOrWhiteSpace(location))
             {
                 if (Enum.TryParse<KlokLocatie>(location, out var klokLocatieEnum))
@@ -133,8 +167,6 @@ public class AanvoerderItemController : ControllerBase
             productsQuery = productsQuery
                 .Where(p => p.Veildatum > DateOnly.FromDateTime(DateTime.Now))
                 .OrderBy(p => p.Veildatum);
-
-            foreach (var p in productsQuery) { Console.WriteLine($"ItemId: {p.Id}, AanvoerderId: {p.AanvoerderId}, User: {p.Aanvoerder?.User?.Name}"); }
 
             var productsDTO = productsQuery
                 .Select(p => new AanvoerderItemListDTO

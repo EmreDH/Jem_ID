@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
+import Layout from "./pages/Layout";
+
 import Dashboard from "./pages/Dashboard";
 import HomePage from "./pages/HomePage";
 import Login from "./pages/Login";
@@ -13,115 +14,125 @@ import UpcomingProducts from "./pages/UpcomingProducts";
 import Profiel from "./pages/Profiel";
 import ActueleProduct from "./pages/ActueleProduct";
 import Veilingen from "./pages/Veilingen";
-import Footer from "./components/Footer";
 import AuctionDetailPage from "./pages/AuctionDetail";
 import Veilingmaster from "./pages/Veilingmaster";
 import LiveAuction from "./pages/LiveAuction";
 
 function App(): JSX.Element {
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        minHeight: "100vh",
-        backgroundColor: "#F7F8FC",
-      }}>
-      <Navbar />
+    <Layout>
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/" element={<HomePage />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/forbidden" element={<Forbidden />} />
 
-      <div style={{ flex: 1 }}>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/forbidden" element={<Forbidden />} />
+        {/* Protected Routes */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute roles={["admin"]}>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
 
-          <Route path="/actuele-product" element={<ActueleProduct />} />
+        <Route
+          path="/profiel"
+          element={
+            <ProtectedRoute roles={["klant", "admin"]}>
+              <Profiel />
+            </ProtectedRoute>
+          }
+        />
 
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute roles={["Admin"]}>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
+        <Route
+          path="/actuele-product"
+          element={
+            <ProtectedRoute roles={["klant", "admin"]}>
+              <ActueleProduct />
+            </ProtectedRoute>
+          }
+        />
 
-          <Route
-            path="/profiel"
-            element={
-              <ProtectedRoute roles={["klant", "Admin"]}>
-                <Profiel />
-              </ProtectedRoute>
-            }
-          />
+        {/* Protected Routes */}
+<Route
+  path="/veilingen"
+  element={
+    <ProtectedRoute roles={["klant", "admin", "veilingmeester"]}>
+      <Veilingen />
+    </ProtectedRoute>
+  }
+/>
 
-          <Route
-            path="/AanvoerderItem"
-            element={
-              <ProtectedRoute roles={["Admin"]}>
-                <AanvoerderItem />
-              </ProtectedRoute>
-            }
-          />
+<Route
+  path="/veilingen/:auctionId"
+  element={
+    <ProtectedRoute roles={["klant", "admin", "veilingmeester"]}>
+      <AuctionDetailPage />
+    </ProtectedRoute>
+  }
+/>
 
-          <Route
-            path="/aankomende-producten"
-            element={
-              <ProtectedRoute roles={["Admin", "Veilingmeester"]}>
-                <UpcomingProducts />
-              </ProtectedRoute>
-            }
-          />
+<Route
+  path="/veiling/live/:id"
+  element={
+    <ProtectedRoute roles={["klant", "admin", "veilingmeester"]}>
+      <LiveAuction />
+    </ProtectedRoute>
+  }
+/>
 
-          <Route
-            path="/Veilingmaster/:id"
-            element={
-              <ProtectedRoute roles={["Veilingmeester", "Admin"]}>
-                <Veilingmaster />
-              </ProtectedRoute>
-            }
-          />
+<Route
+  path="/aankomende-producten"
+  element={
+    <ProtectedRoute roles={["admin", "veilingmeester"]}>
+      <UpcomingProducts />
+    </ProtectedRoute>
+  }
+/>
 
-          <Route
-            path="/Veilingmaster"
-            element={
-              <ProtectedRoute roles={["Veilingmeester", "Admin"]}>
-                <Veilingmaster />
-              </ProtectedRoute>
-            }
-          />
+        <Route
+          path="/AanvoerderItem"
+          element={
+            <ProtectedRoute roles={["aanvoerder","admin"]}>
+              <AanvoerderItem />
+            </ProtectedRoute>
+          }
+        />
 
-          <Route
-            path="/veilingen"
-            element={
-              <ProtectedRoute roles={["klant", "Admin", "Veilingmeester"]}>
-                <Veilingen />
-              </ProtectedRoute>
-            }
-          />
+        {/* Veilingmeester/Admin routes */}
+        <Route
+          path="/Veilingmaster/:id"
+          element={
+            <ProtectedRoute roles={["veilingmeester", "admin"]}>
+              <Veilingmaster />
+            </ProtectedRoute>
+          }
+        />
 
-          <Route
-            path="/veilingen/:auctionId"
-            element={
-              <ProtectedRoute roles={["klant", "Admin", "Veilingmeester"]}>
-                <AuctionDetailPage />
-              </ProtectedRoute>
-            }
-          />
+        <Route
+          path="/Veilingmaster"
+          element={
+            <ProtectedRoute roles={["veilingmeester", "admin"]}>
+              <Veilingmaster />
+            </ProtectedRoute>
+          }
+        />
 
-          <Route
-            path="/veiling/live/:id"
-            element={
-              <ProtectedRoute roles={["klant", "Admin", "Veilingmeester"]}>
-                <LiveAuction />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-      </div>
-    </div>
+        {/* Live auction */}
+        <Route
+          path="/veiling/live/:id"
+          element={
+            <ProtectedRoute roles={["klant", "admin", "veilingmeester"]}>
+              <LiveAuction />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </Layout>
   );
 }
 

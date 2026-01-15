@@ -5,13 +5,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace BackEnd.Controller
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/auction")]
+    [Authorize] // ✅ LOCKED: all endpoints require login unless overridden (we won't)
     public class AuctionController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -21,6 +22,7 @@ namespace BackEnd.Controller
             _context = context;
         }
 
+        // ✅ Only Veilingmeester/Admin can start auctions
         [Authorize(Roles = "veilingmeester,admin")]
         [HttpPost("start/{id:int}")]
         public async Task<IActionResult> StartAuction(int id)
@@ -34,10 +36,7 @@ namespace BackEnd.Controller
 
             if (auction == null)
             {
-                auction = new AuctionItem
-                {
-                    AanvoerItemId = id
-                };
+                auction = new AuctionItem { AanvoerItemId = id };
                 _context.AuctionItems.Add(auction);
             }
 
@@ -46,11 +45,14 @@ namespace BackEnd.Controller
             auction.StartTimeUtc = DateTime.UtcNow;
             auction.EndTimeUtc = DateTime.UtcNow.AddSeconds(20);
             auction.IsFinished = false;
+            auction.FinalPrice = null;
 
             await _context.SaveChangesAsync();
             return Ok(auction);
         }
 
+        // ✅ Logged-in viewers only: klant/veilingmeester/admin
+        [Authorize(Roles = "klant,veilingmeester,admin")]
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetAuction(int id)
         {
@@ -61,10 +63,10 @@ namespace BackEnd.Controller
             if (auction == null)
                 return NotFound();
 
+            // Demo behavior: updates price on each GET
             if (!auction.IsFinished)
             {
                 var elapsedMs = (DateTime.UtcNow - auction.StartTimeUtc).TotalMilliseconds;
-
                 var decrease = (decimal)(elapsedMs / 100.0) * 0.02m;
                 var newPrice = Math.Max(0, auction.StartPrice - decrease);
 
@@ -74,15 +76,17 @@ namespace BackEnd.Controller
                 {
                     auction.IsFinished = true;
                     auction.FinalPrice = 0;
-                    await _context.SaveChangesAsync();
-                    return Ok(auction);
                 }
+
+                await _context.SaveChangesAsync();
             }
 
             return Ok(auction);
         }
 
-        [HttpPost("bid/{id}")]
+        // ✅ Only Klant/Admin can bid
+        [Authorize(Roles = "klant,admin")]
+        [HttpPost("bid/{id:int}")]
         public async Task<IActionResult> Bid(int id)
         {
             var auction = await _context.AuctionItems
@@ -96,7 +100,6 @@ namespace BackEnd.Controller
 
             var elapsedMs = (DateTime.UtcNow - auction.StartTimeUtc).TotalMilliseconds;
             var decrease = (decimal)(elapsedMs / 100.0) * 0.02m;
-
             var livePrice = Math.Max(0, auction.StartPrice - decrease);
 
             auction.IsFinished = true;
@@ -107,6 +110,8 @@ namespace BackEnd.Controller
             return Ok(auction);
         }
 
+        // ✅ Logged-in viewers only
+        [Authorize(Roles = "klant,veilingmeester,admin")]
         [HttpGet("active")]
         public async Task<IActionResult> GetActiveAuctions()
         {
@@ -130,7 +135,8 @@ namespace BackEnd.Controller
             return Ok(auctions);
         }
 
-
+        // ✅ Logged-in viewers only
+        [Authorize(Roles = "klant,veilingmeester,admin")]
         [HttpGet("detail/{auctionId:int}")]
         public async Task<ActionResult<AuctionDetailDTO>> GetAuctionDetail(int auctionId)
         {
@@ -146,11 +152,8 @@ namespace BackEnd.Controller
 
             var item = auction.AanvoerderItem;
 
-            // 1. Minimale prijs uit product
             decimal minPrice = item.MinimumPrijs;
-
-            // 2. Start = min + 50% marge
-            decimal startPrice = Math.Round(minPrice * 2m, 2); // 50% marge
+            decimal startPrice = Math.Round(minPrice * 2m, 2);
 
             var dto = new AuctionDetailDTO
             {
@@ -168,13 +171,13 @@ namespace BackEnd.Controller
 
                 StartPrijs = startPrice,
                 MinimalePrijs = minPrice,
-                StapBedrag = 0.05m,     // zakt met 0.05
-                StapSeconden = 1,       // elke 2 seconden (demo)
+                StapBedrag = 0.05m,
+                StapSeconden = 1,
                 StartTijdUtc = auction.StartTimeUtc,
 
                 IsGesloten = auction.IsFinished,
                 WinnaarNaam = null,
-                WinnendePrijs = null
+                WinnendePrijs = auction.IsFinished ? auction.FinalPrice : null
             };
 
             return Ok(dto);

@@ -14,6 +14,4 @@ public class RegisterRequestDTO
     [MinLength(8, ErrorMessage = "Wachtwoord moet minimaal 8 tekens bevatten")]
     public string Password { get; set; }
 
-    // 👇 Optional Role — only used by backend or admin panel
-    public Role? Role { get; set; }
 }
