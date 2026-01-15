@@ -103,15 +103,6 @@ function AuctionDetailPage() {
             <span className="vd-price-label">Huidige prijs</span>
             <span className="vd-price-value">€ {currentPrice.toFixed(2)}</span>
 
-            <p className="clock-extra">
-              Start: € {data.startPrijs.toFixed(2)} • Min: €{" "}
-              {data.minimalePrijs.toFixed(2)}
-            </p>
-            <p className="clock-extra">
-              Daling: € {data.stapBedrag.toFixed(2)} elke {data.stapSeconden}{" "}
-              sec
-            </p>
-
             {data.isGesloten ? (
               <span className="vd-status-closed">
                 Veiling gesloten{" "}
@@ -126,7 +117,8 @@ function AuctionDetailPage() {
                       2
                     )})`
                   )
-                }>
+                }
+              >
                 Plaats bod voor € {currentPrice.toFixed(2)}
               </button>
             )}
