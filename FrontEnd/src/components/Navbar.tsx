@@ -27,7 +27,11 @@ const Navbar: React.FC = () => {
     >
       <div className="container">
         {/* Brand */}
-        <Link className="navbar-brand fw-bold" to="/" aria-label="Go to homepage">
+        <Link
+          className="navbar-brand fw-bold"
+          to="/"
+          aria-label="Go to homepage"
+        >
           jem.id
         </Link>
 
@@ -49,7 +53,10 @@ const Navbar: React.FC = () => {
           <ul className="navbar-nav ms-auto align-items-center">
             {/* PUBLIC LINKS */}
             <li className="nav-item">
-              <Link to="/" className={`nav-link ${isActive("/") ? "active" : ""}`}>
+              <Link
+                to="/"
+                className={`nav-link ${isActive("/") ? "active" : ""}`}
+              >
                 Home
               </Link>
             </li>
@@ -68,7 +75,9 @@ const Navbar: React.FC = () => {
               <li className="nav-item">
                 <Link
                   to="/veilingen"
-                  className={`nav-link ${startsWith("/veilingen") ? "active" : ""}`}
+                  className={`nav-link ${
+                    startsWith("/veilingen") ? "active" : ""
+                  }`}
                 >
                   Veilingen
                 </Link>
@@ -79,14 +88,16 @@ const Navbar: React.FC = () => {
               <li className="nav-item">
                 <Link
                   to="/dashboard"
-                  className={`nav-link ${startsWith("/dashboard") ? "active" : ""}`}
+                  className={`nav-link ${
+                    startsWith("/dashboard") ? "active" : ""
+                  }`}
                 >
                   Dashboard
                 </Link>
               </li>
             )}
 
-            {hasPermission("manageProducts") && (
+            {/* {hasPermission("manageProducts") && (
               <li className="nav-item">
                 <Link
                   to="/actuele-product"
@@ -95,13 +106,15 @@ const Navbar: React.FC = () => {
                   Productbeheer
                 </Link>
               </li>
-            )}
+            )} */}
 
             {hasPermission("viewAanvoerderItem") && (
               <li className="nav-item">
                 <Link
                   to="/AanvoerderItem"
-                  className={`nav-link ${startsWith("/AanvoerderItem") ? "active" : ""}`}
+                  className={`nav-link ${
+                    startsWith("/AanvoerderItem") ? "active" : ""
+                  }`}
                 >
                   AanvoerderItem
                 </Link>
@@ -122,22 +135,26 @@ const Navbar: React.FC = () => {
             )}
 
             {/* ✅ Veilingmaster link */}
-            {hasPermission("viewVeilingmaster") && (
+            {/* {hasPermission("viewVeilingmaster") && (
               <li className="nav-item">
                 <Link
                   to="/Veilingmaster"
-                  className={`nav-link ${startsWith("/Veilingmaster") ? "active" : ""}`}
+                  className={`nav-link ${
+                    startsWith("/Veilingmaster") ? "active" : ""
+                  }`}
                 >
                   Veilingmaster
                 </Link>
               </li>
-            )}
+            )} */}
 
             {hasPermission("viewProfile") && (
               <li className="nav-item">
                 <Link
                   to="/profiel"
-                  className={`nav-link ${startsWith("/profiel") ? "active" : ""}`}
+                  className={`nav-link ${
+                    startsWith("/profiel") ? "active" : ""
+                  }`}
                 >
                   Profiels
                 </Link>

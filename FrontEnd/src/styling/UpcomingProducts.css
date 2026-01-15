@@ -53,7 +53,7 @@
 .up-table td {
   padding: 10px 12px;
   border-bottom: 1px solid #f3f4f6;
-  text-align: left;
+  text-align: center;
   vertical-align: middle;
 }
 
@@ -81,11 +81,12 @@
 
 .up-btn {
   padding: 6px 10px;
-  border-radius: 6px;
+  border-radius: 5px;
   border: 1px solid transparent;
   cursor: pointer;
   font-size: 0.85rem;
   font-weight: 600;
+  align-items: center;
 }
 
 .up-btn-secondary {
@@ -122,4 +123,28 @@
   background: #e6fffa;
   color: #0f766e;
   border-color: #99f6e4;
+}
+
+.up-table th:last-child,
+.up-table td:last-child {
+  text-align: center;
+  width: 100px;
+}
+
+.up-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.up-table th:last-child,
+.up-table td:last-child {
+  text-align: center;
+  width: 100px;
+}
+
+.up-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

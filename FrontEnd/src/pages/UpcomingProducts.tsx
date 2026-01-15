@@ -58,7 +58,7 @@ function UpcomingProducts() {
           minimumPrijs: dto.minimumPrijs,
           kloklocatie: dto.gewensteKloklocatie as ClockLocation,
           AanvoerderId: dto.AanvoerderId || 0,
-          aanvoerderName: dto.AanvoerderName || "😒",
+          aanvoerderName: dto.AanvoerderName,
         }));
 
         setProducts(mapped);
@@ -122,7 +122,6 @@ function UpcomingProducts() {
               <th>Hoeveelheid</th>
               <th>Min. prijs</th>
               <th>Kloklocatie</th>
-              <th>Aanvoerder</th>
               <th>Acties</th>
             </tr>
           </thead>
@@ -153,7 +152,6 @@ function UpcomingProducts() {
                 <td>{p.hoeveelheid}</td>
                 <td>€ {p.minimumPrijs.toFixed(2)}</td>
                 <td>{p.kloklocatie}</td>
-                <td>{p.aanvoerderName}</td>
                 <td>
                   <div className="up-actions">
                     <button
